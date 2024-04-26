@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SoundScape.Models;
 
 public partial class Song
 {
+    [Key]
     public string TrackId { get; set; } = null!;
-
+    [Required] // Not sure if we want this here
     public string? AlbumId { get; set; }
 
     public string? TrackName { get; set; }
