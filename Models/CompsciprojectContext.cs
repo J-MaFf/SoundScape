@@ -15,6 +15,10 @@ public partial class CompsciprojectContext : DbContext
     {
     }
 
+    /*
+    This line declares a DbSet for the Album entity. A DbSet represents a collection of all entities in the database
+    of a given type (Album in this case), and it's the primary way you query and save instances of your entities.
+    */
     public virtual DbSet<Album> Albums { get; set; }
 
     public virtual DbSet<Playlist> Playlists { get; set; }
