@@ -1,18 +1,23 @@
-using System.ComponentModel.DataAnnotations;
-namespace Models;
-public class Song
+﻿using System;
+using System.Collections.Generic;
+
+namespace SoundScape.Models;
+
+public partial class Song
 {
-    [Key]
-    public int TrackID { get; set; }
-    [Required]
-    public int AlbumID { get; set; }
-    [Required]
-    public string TrackName { get; set; }
-    [Required]
-    public TimeSpan Duration { get; set; }
-    public string Genre { get; set; }
+    public string TrackId { get; set; } = null!;
 
-    public byte[] Sample { get; set; }
+    public string? AlbumId { get; set; }
 
-    // Artist is probably needed here, but is not currently included in this table
+    public string? TrackName { get; set; }
+
+    public int? Duration { get; set; }
+
+    public string? Genre { get; set; }
+
+    public string? Sample { get; set; }
+
+    public virtual Album? Album { get; set; }
+
+    public virtual ICollection<PlaylistSong> PlaylistSongs { get; set; } = new List<PlaylistSong>();
 }
