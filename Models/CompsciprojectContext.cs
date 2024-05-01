@@ -15,10 +15,6 @@ public partial class CompsciprojectContext : DbContext
     {
     }
 
-    /*
-    This line declares a DbSet for the Album entity. A DbSet represents a collection of all entities in the database
-    of a given type (Album in this case), and it's the primary way you query and save instances of your entities.
-    */
     public virtual DbSet<Album> Albums { get; set; }
 
     public virtual DbSet<Playlist> Playlists { get; set; }
@@ -45,7 +41,7 @@ public partial class CompsciprojectContext : DbContext
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
-            entity.Property(e => e.Albumname).IsUnicode(false);
+            entity.Property(e => e.Name).IsUnicode(false);
         });
 
         modelBuilder.Entity<Playlist>(entity =>
@@ -91,15 +87,11 @@ public partial class CompsciprojectContext : DbContext
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistSongs)
                 .HasForeignKey(d => d.PlaylistId)
                 .HasConstraintName("PlaylistID");
-
-            entity.HasOne(d => d.Track).WithMany(p => p.PlaylistSongs)
-                .HasForeignKey(d => d.TrackId)
-                .HasConstraintName("TrackID");
         });
 
         modelBuilder.Entity<Song>(entity =>
         {
-            entity.HasKey(e => e.TrackId).HasName("PK_Songdetails");
+            entity.HasKey(e => e.TrackId);
 
             entity.ToTable("Songs", "dbo");
 
@@ -107,23 +99,21 @@ public partial class CompsciprojectContext : DbContext
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("TrackID");
+            entity.Property(e => e.AlbumAlbumId)
+                .HasMaxLength(128)
+                .IsUnicode(false)
+                .HasColumnName("AlbumAlbumID");
             entity.Property(e => e.AlbumId)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
-            entity.Property(e => e.Genre)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Sample)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.TrackName)
-                .IsUnicode(false)
-                .HasColumnName("track_name");
+            entity.Property(e => e.Albumname).IsUnicode(false);
+            entity.Property(e => e.Artists).IsUnicode(false);
+            entity.Property(e => e.Genre).IsUnicode(false);
+            entity.Property(e => e.Trackname).IsUnicode(false);
 
             entity.HasOne(d => d.Album).WithMany(p => p.Songs)
                 .HasForeignKey(d => d.AlbumId)
-                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("AlbumID");
         });
 
