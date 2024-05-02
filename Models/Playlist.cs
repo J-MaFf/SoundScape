@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SoundScape.Models;
+namespace COMPSCI366.Models;
 
 public partial class Playlist
 {
-    public string PlaylistID { get; set; } = null!;
+    public string PlaylistId { get; set; } = null!;
 
     public string? Username { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SoundScape.Models;
+namespace COMPSCI366.Models;
 
 public partial class User
 {
@@ -11,5 +11,5 @@ public partial class User
 
     public long? MinutesListened { get; set; }
 
-    public virtual ICollection<Playlist> Playlists { get; set; } = [];
+    public virtual ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
 }

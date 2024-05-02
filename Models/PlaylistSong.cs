@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SoundScape.Models;
+namespace COMPSCI366.Models;
 
 public partial class PlaylistSong
 {
-    public long PlaylistSongID { get; set; }
+    public long PlaylistSongId { get; set; }
 
-    public string? PlaylistID { get; set; }
+    public string? PlaylistId { get; set; }
 
-    public string? TrackID { get; set; }
+    public string? TrackId { get; set; }
 
     public int? Order { get; set; }
 
