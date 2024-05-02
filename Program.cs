@@ -15,6 +15,7 @@ static class Program
 
         /// Testing Query Controller
         QueryController queryController = new();
-        QueryController.ListSongsByArtist();
+        // QueryController.ListSongsByArtist();
+        QueryController.ListAlbumsBySong("Hello");
     }    
 }

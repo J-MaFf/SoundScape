@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SoundScape.Models;
 
-public partial class CompsciprojectContext : DbContext
+public partial class CompSciProjectContext : DbContext
 {
-    public CompsciprojectContext()
+    public CompSciProjectContext()
     {
     }
 
-    public CompsciprojectContext(DbContextOptions<CompsciprojectContext> options)
+    public CompSciProjectContext(DbContextOptions<CompSciProjectContext> options)
         : base(options)
     {
     }
