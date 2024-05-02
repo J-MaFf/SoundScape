@@ -37,9 +37,6 @@ public class QueryController
         // Only getting 1 result? Doesn't seem right. Need to figure out whats wrong with DB
         //
 
-        foreach (var song in songs)
-        {
-            Console.WriteLine(song.TrackName); // Print the name of the song
-        }
+        songs.ForEach(s => Console.WriteLine(s.TrackName));
     }
 }
