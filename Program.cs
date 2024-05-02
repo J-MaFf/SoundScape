@@ -19,11 +19,12 @@ static partial class Program
         // Application.Run(new Form1());
 
         /// Testing Query Controller
+        Console.WriteLine("fuck");
         QueryController queryController = new();
         // QueryController.ListSongsByArtist();
         QueryController.ListAlbumsBySong("Hello");
 
         Console.ReadKey(); // Don't end program until user presses key
-        
-    }    
+
+    }
 }
