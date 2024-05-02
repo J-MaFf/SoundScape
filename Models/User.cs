@@ -11,5 +11,5 @@ public partial class User
 
     public long? MinutesListened { get; set; }
 
-    public virtual ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
+    public virtual ICollection<Playlist> Playlists { get; set; } = [];
 }

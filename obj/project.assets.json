@@ -4200,24 +4200,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\7maff\\.nuget\\packages\\": {}
+    "C:\\Users\\matth\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Dev\\School\\DBMS\\SoundScape\\SoundScape.csproj",
+      "projectUniqueName": "F:\\Programming\\COMPSCI366\\ProjectVSCode\\SoundScape\\SoundScape.csproj",
       "projectName": "SoundScape",
-      "projectPath": "C:\\Dev\\School\\DBMS\\SoundScape\\SoundScape.csproj",
-      "packagesPath": "C:\\Users\\7maff\\.nuget\\packages\\",
-      "outputPath": "C:\\Dev\\School\\DBMS\\SoundScape\\obj\\",
+      "projectPath": "F:\\Programming\\COMPSCI366\\ProjectVSCode\\SoundScape\\SoundScape.csproj",
+      "packagesPath": "C:\\Users\\matth\\.nuget\\packages\\",
+      "outputPath": "F:\\Programming\\COMPSCI366\\ProjectVSCode\\SoundScape\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\7maff\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\matth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4230,11 +4238,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -4271,7 +4274,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

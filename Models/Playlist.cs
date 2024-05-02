@@ -5,7 +5,7 @@ namespace SoundScape.Models;
 
 public partial class Playlist
 {
-    public string PlaylistId { get; set; } = null!;
+    public string PlaylistID { get; set; } = null!;
 
     public string? Username { get; set; }
 

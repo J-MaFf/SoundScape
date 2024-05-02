@@ -37,7 +37,7 @@ public partial class CompsciprojectContext : DbContext
         {
             entity.ToTable("Album", "dbo");
 
-            entity.Property(e => e.AlbumId)
+            entity.Property(e => e.AlbumID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
@@ -48,9 +48,9 @@ public partial class CompsciprojectContext : DbContext
         {
             entity.ToTable("Playlists", "dbo");
 
-            entity.HasIndex(e => e.PlaylistId, "PlaylistID").IsUnique();
+            entity.HasIndex(e => e.PlaylistID, "PlaylistID").IsUnique();
 
-            entity.Property(e => e.PlaylistId)
+            entity.Property(e => e.PlaylistID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("PlaylistID");
@@ -68,52 +68,52 @@ public partial class CompsciprojectContext : DbContext
 
         modelBuilder.Entity<PlaylistSong>(entity =>
         {
-            entity.HasKey(e => e.PlaylistSongId).HasName("PK_NewTable");
+            entity.HasKey(e => e.PlaylistSongID).HasName("PK_NewTable");
 
             entity.ToTable("PlaylistSongs", "dbo");
 
-            entity.Property(e => e.PlaylistSongId)
+            entity.Property(e => e.PlaylistSongID)
                 .ValueGeneratedNever()
                 .HasColumnName("PlaylistSongID");
-            entity.Property(e => e.PlaylistId)
+            entity.Property(e => e.PlaylistID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("PlaylistID");
-            entity.Property(e => e.TrackId)
+            entity.Property(e => e.TrackID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("TrackID");
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistSongs)
-                .HasForeignKey(d => d.PlaylistId)
+                .HasForeignKey(d => d.PlaylistID)
                 .HasConstraintName("PlaylistID");
         });
 
         modelBuilder.Entity<Song>(entity =>
         {
-            entity.HasKey(e => e.TrackId);
+            entity.HasKey(e => e.TrackID);
 
             entity.ToTable("Songs", "dbo");
 
-            entity.Property(e => e.TrackId)
+            entity.Property(e => e.TrackID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("TrackID");
-            entity.Property(e => e.AlbumAlbumId)
+            entity.Property(e => e.AlbumAlbumID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("AlbumAlbumID");
-            entity.Property(e => e.AlbumId)
+            entity.Property(e => e.AlbumID)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
-            entity.Property(e => e.Albumname).IsUnicode(false);
+            entity.Property(e => e.AlbumName).IsUnicode(false);
             entity.Property(e => e.Artists).IsUnicode(false);
             entity.Property(e => e.Genre).IsUnicode(false);
-            entity.Property(e => e.Trackname).IsUnicode(false);
+            entity.Property(e => e.TrackName).IsUnicode(false);
 
             entity.HasOne(d => d.Album).WithMany(p => p.Songs)
-                .HasForeignKey(d => d.AlbumId)
+                .HasForeignKey(d => d.AlbumID)
                 .HasConstraintName("AlbumID");
         });
 

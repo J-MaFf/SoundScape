@@ -5,11 +5,11 @@ namespace SoundScape.Models;
 
 public partial class PlaylistSong
 {
-    public long PlaylistSongId { get; set; }
+    public long PlaylistSongID { get; set; }
 
-    public string? PlaylistId { get; set; }
+    public string? PlaylistID { get; set; }
 
-    public string? TrackId { get; set; }
+    public string? TrackID { get; set; }
 
     public int? Order { get; set; }
 
