@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6icf3nHc6DAbC+uofAJ1Byd3C7z69Tk6wXq6GnB9NPlkac3OFZfKHYIOI9swVXWiB9qhh4ZLNwRN5Pfncnzvzg==",
+  "dgSpecHash": "a0beeEIX/a1eLPiiFEjCmnZGIYjPXaGSFtl32oQpjPYiklgrihUNbsJf1tH80lcWzTkY8L70A6FZ0HzGdn5Clw==",
   "success": true,
-  "projectFilePath": "C:\\Dev\\School\\DBMS\\SoundScape\\SoundScape.csproj",
+  "projectFilePath": "C:\\Dev\\School\\DBMS\\SoundScape\\COMPSCI366.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\7maff\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\7maff\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

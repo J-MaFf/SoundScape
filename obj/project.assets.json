@@ -4195,6 +4195,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
+      "Microsoft.EntityFrameworkCore >= 8.0.4",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.4",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.4"
     ]
@@ -4205,19 +4206,21 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Dev\\School\\DBMS\\SoundScape\\SoundScape.csproj",
-      "projectName": "SoundScape",
-      "projectPath": "C:\\Dev\\School\\DBMS\\SoundScape\\SoundScape.csproj",
+      "projectUniqueName": "C:\\Dev\\School\\DBMS\\SoundScape\\COMPSCI366.csproj",
+      "projectName": "COMPSCI366",
+      "projectPath": "C:\\Dev\\School\\DBMS\\SoundScape\\COMPSCI366.csproj",
       "packagesPath": "C:\\Users\\7maff\\.nuget\\packages\\",
       "outputPath": "C:\\Dev\\School\\DBMS\\SoundScape\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\7maff\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\7maff\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4241,6 +4244,10 @@
       "net8.0-windows7.0": {
         "targetAlias": "net8.0-windows",
         "dependencies": {
+          "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[8.0.4, )"
+          },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",

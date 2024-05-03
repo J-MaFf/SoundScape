@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SoundScape.Models;
+namespace COMPSCI366.Models;
 
 public partial class Playlist
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SoundScape.Models;
+namespace COMPSCI366.Models;
 
 public partial class PlaylistSong
 {
@@ -14,6 +14,4 @@ public partial class PlaylistSong
     public int? Order { get; set; }
 
     public virtual Playlist? Playlist { get; set; }
-
-    public virtual Song? Track { get; set; }
 }
