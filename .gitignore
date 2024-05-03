@@ -21,6 +21,7 @@ _ReSharper*/
 project.lock.json
 .project.json.user
 **/.vscode
+**.vs
 *.code-workspace
 
 # Ignore all .pubxml files
