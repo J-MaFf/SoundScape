@@ -1,0 +1,45 @@
+# Ignore build output
+[Bb]in/
+[Oo]bj/
+
+# Ignore NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+
+# Ignore Visual Studio user-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore ReSharper files
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Ignore .NET Core output
+project.lock.json
+.project.json.user
+**/.vscode
+*.code-workspace
+
+# Ignore all .pubxml files
+*.pubxml
+
+# Ignore log files
+*.log
+
+# Ignore the SQL Server files
+*.mdf
+*.ldf
+*.bak
+*.bacpac
+*.sqlproj
+*.pfx
+*.jfm
+
+# Ignore the Application Insights local telemetry
+_AI*
+
+# Ignore crash dump files
+*.dmp
