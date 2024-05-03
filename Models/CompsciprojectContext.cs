@@ -47,12 +47,12 @@ public partial class CompsciprojectContext : DbContext
             entity.Property(e => e.Name).IsUnicode(false);
 
             entity.Property(e => e.Totalsongs)
-                .IsUnicode(false);
-                .HasColumnName("Totalsongs");
+                .IsUnicode(false)
+                .HasColumnName("Totalsongs")
                 .IsRequired()
                 .HasDefaultValue(0);
 
-            entity.Property(entity => e.Duration).IsUnicode(false)
+            entity.Property(e => e.Duration).IsUnicode(false)
                 .HasColumnName("Duration")
                 .IsUnicode(false)
                 .HasDefaultValue(0);
