@@ -33,6 +33,7 @@ public partial class CompsciprojectContext : DbContext
     {
         modelBuilder.HasDefaultSchema("guest");
 
+        // ALBUM
         modelBuilder.Entity<Album>(entity =>
         {
             entity.ToTable("Album", "dbo");
@@ -44,8 +45,20 @@ public partial class CompsciprojectContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
             entity.Property(e => e.Name).IsUnicode(false);
+
+            entity.Property(e => e.Totalsongs)
+                .IsUnicode(false);
+                .HasColumnName("Totalsongs");
+                .IsRequired()
+                .HasDefaultValue(0);
+
+            entity.Property(entity => e.Duration).IsUnicode(false)
+                .HasColumnName("Duration")
+                .IsUnicode(false)
+                .HasDefaultValue(0);
         });
 
+        // PLAYLIST
         modelBuilder.Entity<Playlist>(entity =>
         {
             entity.ToTable("Playlists", "dbo");
@@ -67,7 +80,7 @@ public partial class CompsciprojectContext : DbContext
                 .HasForeignKey(d => d.Username)
                 .HasConstraintName("Username");
         });
-
+        // PLAYLIST SONG
         modelBuilder.Entity<PlaylistSong>(entity =>
         {
             entity.HasKey(e => e.PlaylistSongId).HasName("PK_NewTable");
@@ -90,7 +103,7 @@ public partial class CompsciprojectContext : DbContext
                 .HasForeignKey(d => d.PlaylistId)
                 .HasConstraintName("PlaylistID");
         });
-
+        // SONG
         modelBuilder.Entity<Song>(entity =>
         {
             entity.HasKey(e => e.TrackId);
@@ -128,6 +141,7 @@ public partial class CompsciprojectContext : DbContext
                 .HasConstraintName("AlbumID");
         });
 
+        // USER
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Username);
