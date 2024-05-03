@@ -54,8 +54,7 @@ public partial class CompsciprojectContext : DbContext
 
             entity.Property(e => e.Duration).IsUnicode(false)
                 .HasColumnName("Duration")
-                .IsUnicode(false)
-                .HasDefaultValue(0);
+                .IsUnicode(false);
         });
 
         // PLAYLIST
