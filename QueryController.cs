@@ -16,10 +16,10 @@ public class QueryController
         ///
         /// Getting a ton of duplicates? Issue with relationships?
         ///
-        // foreach (var song in songs)
-        // {
-        //     Console.WriteLine(song.TrackName); // Print the name of the song
-        // }
+        //foreach (var song in songs)
+        //{
+        //    Console.WriteLine(song.Trackname); // Print the name of the song
+        //}
 
         // Removed duplicates just for printing, but we need to figure out whats wrong with DB
         songs.Select(s => s.Trackname).Distinct().ToList().ForEach(Console.WriteLine);
@@ -67,8 +67,7 @@ public class QueryController
     {
         using var context = new CompsciprojectContext();
         context.Songs
-         .ToList()
-         .OrderBy(s => s.Danceability)
+         .OrderByDescending(s => s.Danceability)
          .Take(15)
          .ToList()
          .ForEach(s => Console.WriteLine($"{s.Trackname} + {s.Danceability}"));

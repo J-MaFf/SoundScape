@@ -23,7 +23,10 @@ static partial class Program
         // QueryController.ListSongsByArtist();
         // QueryController.ListAlbumsBySong("Hello");
         QueryController.ListSongsByDanceablity();
-        Console.ReadKey(); // Don't end program until user presses key
+
+        // Wait for user to end program
+        Console.WriteLine("Press any key to exit.");
+        Console.ReadKey();
 
     }
 }

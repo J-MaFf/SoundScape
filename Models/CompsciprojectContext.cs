@@ -118,8 +118,7 @@ public partial class CompsciprojectContext : DbContext
             entity.Property(e => e.Genre).IsUnicode(false);
             entity.Property(e => e.Trackname).IsUnicode(false);
 
-            entity.Property<float?>(e => e.Danceability)
-                .HasPrecision(3, 3)
+            entity.Property<double?>(e => e.Danceability)
                 .HasColumnName("Danceability");
 
 

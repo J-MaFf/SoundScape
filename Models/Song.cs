@@ -15,7 +15,7 @@ public partial class Song
 
     public string? Trackname { get; set; }
 
-    public float? Danceability { get; set; }
+    public double? Danceability { get; set; }
 
     public string? Genre { get; set; }
 
