@@ -54,7 +54,6 @@ public class QueryController
                 .Select(s => s.Trackname)  // Select artists from songs
                 .Distinct()             // Remove duplicates
                 .ToList();              // Convert to list
-
             // Print album name and artists
             Console.WriteLine($"Album: {album.Name} by {string.Join(", ", artists)}");
         }
@@ -71,9 +70,6 @@ public class QueryController
          .Take(15)
          .ToList()
          .ForEach(s => Console.WriteLine($"{s.Trackname} + {s.Danceability}"));
-
-
-
 
     }
 }
