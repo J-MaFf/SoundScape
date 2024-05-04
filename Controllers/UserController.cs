@@ -38,7 +38,7 @@ public class UserController
 
     }
 
-    public User createNewUser(string username, string password)
+    public User CreateNewUser(string username, string password)
     {
         Console.WriteLine($"Creating new user {username}\n");
         User newUser = new();
@@ -60,5 +60,25 @@ public class UserController
         _context.SaveChanges();
 
         return newUser;
+    }
+
+    public void DeleteUser(string username)
+    {
+        Console.WriteLine($"Attempting to delete {username}\n");
+
+        var userToDelete = GetUser(username);
+
+        if (userToDelete == null)
+        {
+            Console.WriteLine($"Cannont delete {username} because that user does not exist\n");
+            return;
+        }
+
+        _context.Users.Remove(userToDelete);
+        _context.SaveChanges();
+
+
+
+        Console.WriteLine($"{username} deleted");
     }
 }
