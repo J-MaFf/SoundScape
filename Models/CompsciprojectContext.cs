@@ -156,6 +156,8 @@ public partial class CompsciprojectContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Password).IsUnicode(false);
+
+            entity.Property(e => e.MinutesListened).IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);
