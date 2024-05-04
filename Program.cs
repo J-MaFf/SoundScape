@@ -60,7 +60,8 @@ static partial class Program
 
         // Test all methods for userController
         userController.ListAllUsers();
-        userController.createNewUser("joey", "1234");
+        userController.CreateNewUser("joey", "1234");
         userController.GetUser("joey");
+        userController.DeleteUser("joey");
     }
 }
