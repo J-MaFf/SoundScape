@@ -18,16 +18,37 @@ static partial class Program
         // ApplicationConfiguration.Initialize();
         // Application.Run(new Form1());
 
-        SongController songController = new();
-        AlbumController albumController = new();
-        songController.ListSongsByArtist("Red Hot Chili Peppers");
-        albumController.ListAlbumsByName("Californication");
-        albumController.ListAlbumsByArtist("Red Hot Chili Peppers");
+
+        //testSongController();
+
+        testAlbumController();
+
+
 
 
         // Wait for user to end program
         Console.WriteLine("Press any key to exit.");
         Console.ReadKey();
+
+    }
+
+    public static void testSongController()
+    {
+        SongController songController = new();
+        // Test all methods for songController:
+        songController.ListSongsByArtist("red hot chili peppers");
+        songController.ListSongsByAlbum("back in black");
+        songController.ListSongsByName("Back in black");
+        songController.ListSongsByDanceability(.466);
+    }
+
+    public static void testAlbumController()
+    {
+        AlbumController albumController = new();
+
+        // Test all methods for albumController
+        albumController.ListAlbumsByName("2014 Forest Hills Drive");
+        albumController.ListAlbumsByArtist("J. Cole");
 
     }
 }
