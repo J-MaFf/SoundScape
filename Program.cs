@@ -19,7 +19,9 @@ static partial class Program
         // Application.Run(new Form1());
 
         SongController songController = new();
+        AlbumController albumController = new();
         songController.ListSongsByArtist("Red Hot Chili Peppers");
+        albumController.ListAlbumsByName("Californication");
 
 
         // Wait for user to end program
