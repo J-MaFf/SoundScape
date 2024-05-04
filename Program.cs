@@ -18,12 +18,9 @@ static partial class Program
         // ApplicationConfiguration.Initialize();
         // Application.Run(new Form1());
 
-        /// Testing Query Controller
-        QueryController queryController = new();
-        // QueryController.ListSongsByArtist();
-        // QueryController.ListAlbumsBySong("Hello");
-        //QueryController.ListSongsByDanceablity();
-        QueryController.ListSongsBy(s => s.Artists == "Red Hot Chili Peppers");
+        SongController songController = new();
+        songController.ListSongsByArtist("Red Hot Chili Peppers");
+
 
         // Wait for user to end program
         Console.WriteLine("Press any key to exit.");
