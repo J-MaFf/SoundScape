@@ -11,14 +11,14 @@ public class AlbumController
 
     public List<Album> ListAlbumsByName(string name)
     {
-        Console.WriteLine($"Searching for albums named {name}");
+        Console.WriteLine($"Searching for albums named {name}:\n");
         var albums = _context.Albums
             .Where(a => a.Name == name)
             .ToList();
 
         albums.ForEach(a => Console.WriteLine(a.Name));
 
-        Console.WriteLine($"There were {albums.Count} album(s) found named {name}");
+        Console.WriteLine($"There were {albums.Count} album(s) found named {name}\n");
 
         return albums;
     }
@@ -26,7 +26,7 @@ public class AlbumController
     // List albums by artist
     public List<Album> ListAlbumsByArtist(string artist)
     {
-        Console.WriteLine($"Searching for albums by artist {artist}");
+        Console.WriteLine($"Searching for albums by artist {artist}:\n");
 
         var albums = _context.Albums
             .Join(
@@ -40,7 +40,9 @@ public class AlbumController
             .Distinct()
             .ToList();
 
-        Console.WriteLine($"There were {albums.Count} album(s) found by artist {artist}");
+        albums.ForEach(album => Console.WriteLine(album.Name));
+
+        Console.WriteLine($"There were {albums.Count} album(s) found by artist {artist}\n");
 
         return albums;
     }

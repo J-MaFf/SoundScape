@@ -22,6 +22,7 @@ static partial class Program
         AlbumController albumController = new();
         songController.ListSongsByArtist("Red Hot Chili Peppers");
         albumController.ListAlbumsByName("Californication");
+        albumController.ListAlbumsByArtist("Red Hot Chili Peppers");
 
 
         // Wait for user to end program
