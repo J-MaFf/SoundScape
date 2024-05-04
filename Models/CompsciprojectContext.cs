@@ -33,6 +33,7 @@ public partial class CompsciprojectContext : DbContext
     {
         modelBuilder.HasDefaultSchema("guest");
 
+        // ALBUM
         modelBuilder.Entity<Album>(entity =>
         {
             entity.ToTable("Album", "dbo");
@@ -44,8 +45,19 @@ public partial class CompsciprojectContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
             entity.Property(e => e.Name).IsUnicode(false);
+
+            entity.Property(e => e.Totalsongs)
+                .IsUnicode(false)
+                .HasColumnName("Totalsongs")
+                .IsRequired();
+
+
+            entity.Property(e => e.Duration).IsUnicode(false)
+                .HasColumnName("Duration")
+                .IsUnicode(false);
         });
 
+        // PLAYLIST
         modelBuilder.Entity<Playlist>(entity =>
         {
             entity.ToTable("Playlists", "dbo");
@@ -67,7 +79,7 @@ public partial class CompsciprojectContext : DbContext
                 .HasForeignKey(d => d.Username)
                 .HasConstraintName("Username");
         });
-
+        // PLAYLIST SONG
         modelBuilder.Entity<PlaylistSong>(entity =>
         {
             entity.HasKey(e => e.PlaylistSongId).HasName("PK_NewTable");
@@ -85,12 +97,15 @@ public partial class CompsciprojectContext : DbContext
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("TrackID");
+            entity.Property<int?>(e => e.Order) // int? might throw errors
+                .IsUnicode(false)
+                .HasColumnName("Order");
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistSongs)
                 .HasForeignKey(d => d.PlaylistId)
                 .HasConstraintName("PlaylistID");
         });
-
+        // SONG
         modelBuilder.Entity<Song>(entity =>
         {
             entity.HasKey(e => e.TrackId);
@@ -98,8 +113,6 @@ public partial class CompsciprojectContext : DbContext
             entity.ToTable("Songs", "dbo");
 
             entity.HasIndex(e => e.TrackId, "TrackID").IsUnique();
-
-
 
             entity.Property(e => e.TrackId)
                 .HasMaxLength(128)
@@ -110,17 +123,22 @@ public partial class CompsciprojectContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
 
-
-
-
             entity.Property(e => e.Albumname).IsUnicode(false);
             entity.Property(e => e.Artists).IsUnicode(false);
             entity.Property(e => e.Genre).IsUnicode(false);
             entity.Property(e => e.Trackname).IsUnicode(false);
 
             entity.Property<double?>(e => e.Danceability)
-                .HasColumnName("Danceability");
+                .HasColumnName("Danceability")
+                .IsUnicode(false);
 
+            entity.Property<bool?>(e => e.Profanity)
+                .HasColumnName("Profanity")
+                .IsUnicode(false);
+
+            entity.Property<int?>(e => e.Duration)
+                .HasColumnName("Duration")
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Album).WithMany(p => p.Songs)
                 .HasForeignKey(d => d.AlbumId)
@@ -128,6 +146,7 @@ public partial class CompsciprojectContext : DbContext
                 .HasConstraintName("AlbumID");
         });
 
+        // USER
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Username);
@@ -140,6 +159,8 @@ public partial class CompsciprojectContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Password).IsUnicode(false);
+
+            entity.Property(e => e.MinutesListened).IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);
