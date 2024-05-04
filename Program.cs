@@ -21,7 +21,9 @@ static partial class Program
 
         //testSongController();
 
-        testAlbumController();
+        //testAlbumController();
+
+        testUserController();
 
 
 
@@ -50,5 +52,15 @@ static partial class Program
         albumController.ListAlbumsByName("2014 Forest Hills Drive");
         albumController.ListAlbumsByArtist("J. Cole");
 
+    }
+
+    public static void testUserController()
+    {
+        UserController userController = new();
+
+        // Test all methods for userController
+        userController.ListAllUsers();
+        userController.createNewUser("joey", "1234");
+        userController.GetUser("joey");
     }
 }
