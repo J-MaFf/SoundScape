@@ -18,7 +18,7 @@ public class PlaylistController
     /// <param name="username">The username of the user.</param>
     /// <returns>A list of playlists owned by the user.
     /// If return value is an empty list, then no playlists owned by the user were found.</returns>
-    public List<Playlist> getPlaylistsByUser(string username)
+    public List<Playlist> GetPlaylistsByUser(string username)
     {
         Console.WriteLine($"Searching for playlists by {username}:\n");
         var playlists = _context.Playlists
@@ -37,7 +37,7 @@ public class PlaylistController
     /// <param name="playlistName">The name of the playlist.</param>
     /// <returns>A list of playlists with the specified name. If return value
     /// is an empty list, then no playlists with the specified name were found.</returns>
-    public List<Playlist> getPlaylistsByName(string playlistName)
+    public List<Playlist> GetPlaylistsByName(string playlistName)
     {
         Console.WriteLine($"Searching for playlists named {playlistName}:\n");
         var playlists = _context.Playlists
@@ -56,7 +56,7 @@ public class PlaylistController
     /// <param name="playlistId"></param>
     /// <returns>A list of songs in the playlist. If return value is an empty list,
     /// then no songs were found in the playlist.</returns>
-    public List<PlaylistSong> getPlaylistSongs(string playlistId)
+    public List<PlaylistSong> GetPlaylistSongs(string playlistId)
     {
         Console.WriteLine($"Listing songs in playlist {playlistId}:\n");
         var playlistSongs = _context.PlaylistSongs
@@ -76,7 +76,7 @@ public class PlaylistController
     /// <param name="playlistName">The name of the playlist.</param>
     /// <param name="description">The description of the playlist.</param>
     /// <returns>The created playlist. If return value is null, the method failed.</returns>
-    public Playlist createPlaylist(string username, string playlistName, string description)
+    public Playlist? CreatePlaylist(string username, string playlistName, string description)
     {
         Console.WriteLine($"Creating playlist {playlistName} for user {username}:\n");
 
@@ -116,7 +116,7 @@ public class PlaylistController
     /// </summary>
     /// <param name="playlistId">The ID of the playlist to delete.</param>
     /// <returns>True if the playlist was successfully deleted, false otherwise.</returns>
-    public bool deletePlaylist(string playlistId)
+    public bool DeletePlaylist(string playlistId)
     {
         Console.WriteLine($"Deleting playlist {playlistId}:\n");
         var playlist = _context.Playlists
@@ -158,7 +158,7 @@ public class PlaylistController
     /// <param name="playlistId">The ID of the playlist.</param>
     /// <param name="trackId">The ID of the song to add.</param>
     /// <returns>The added playlist song. If return value is null, the method failed.</returns>
-    public PlaylistSong addSongToPlaylist(string playlistId, string trackId)
+    public PlaylistSong? AddSongToPlaylist(string playlistId, string trackId)
     {
         // Check if the playlist exists
         var playlist = _context.Playlists.Find(playlistId);
@@ -208,7 +208,7 @@ public class PlaylistController
     /// <param name="playlistId">The ID of the playlist.</param>
     /// <param name="trackId">The ID of the song to remove.</param>
     /// <returns>True if the song was successfully removed, false otherwise.</returns>
-    public bool removeSongFromPlaylist(string playlistId, string trackId)
+    public bool RemoveSongFromPlaylist(string playlistId, string trackId)
     {
         Console.WriteLine($"Removing song {trackId} from playlist {playlistId}:\n");
 

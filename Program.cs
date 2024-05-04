@@ -40,10 +40,10 @@ static partial class Program
     {
         SongController songController = new();
         // Test all methods for songController:
-        songController.getSongsByArtist("red hot chili peppers");
-        songController.getSongsByAlbum("back in black");
-        songController.getSongsByName("Back in black");
-        songController.getSongsByDanceability(.466);
+        songController.GetSongsByArtist("red hot chili peppers");
+        songController.GetSongsByAlbum("back in black");
+        songController.GetSongsByName("Back in black");
+        songController.GetSongsByDanceability(.466);
     }
 
     public static void testAlbumController()
@@ -61,10 +61,10 @@ static partial class Program
         UserController userController = new();
 
         // Test all methods for userController
-        userController.getAllUsers();
-        userController.createNewUser("joey", "1234");
-        userController.getUser("joey");
-        userController.deleteUser("joey");
+        userController.GetAllUsers();
+        userController.CreateNewUser("joey", "1234");
+        userController.GetUser("joey");
+        userController.DeleteUser("joey");
     }
 
     public static void testPlaylistController()
@@ -72,8 +72,8 @@ static partial class Program
         PlaylistController playlistController = new();
 
         // Test all methods for playlistController
-        playlistController.getPlaylistsByUser("joey");
-        playlistController.getPlaylistsByName("joey's playlist");
-        playlistController.getPlaylistSongs("1");
+        playlistController.GetPlaylistsByUser("joey");
+        playlistController.GetPlaylistsByName("joey's playlist");
+        playlistController.GetPlaylistSongs("1");
     }
 }

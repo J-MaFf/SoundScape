@@ -20,7 +20,7 @@ public class SongController
     /// </summary>
     /// <param name="artist">The artist name.</param>
     /// <returns>A list of songs by the specified artist.</returns>
-    public List<Song> getSongsByArtist(string artist)
+    public List<Song> GetSongsByArtist(string artist)
     {
         Console.WriteLine($"Searching for songs by {artist}:\n");
         var songs = _context.Songs
@@ -40,7 +40,7 @@ public class SongController
     /// <param name="album">The album name.</param>
     /// <returns>A list of songs in the specified album.
     /// If the list is empty, the album was not found or it was empty.</returns>
-    public List<Song> getSongsByAlbum(string album)
+    public List<Song> GetSongsByAlbum(string album)
     {
         Console.WriteLine($"Searching for songs in album {album}:\n");
         var songs = _context.Songs
@@ -59,7 +59,7 @@ public class SongController
     /// <param name="name">The song name.</param>
     /// <returns>A list of songs with the specified name.
     /// If the list is empty, the song was not found.</returns>
-    public List<Song> getSongsByName(string name)
+    public List<Song> GetSongsByName(string name)
     {
         Console.WriteLine($"Searching for Songs named {name}\n");
         var songs = _context.Songs
@@ -78,7 +78,7 @@ public class SongController
     /// <param name="danceability">The danceability rating.</param>
     /// <returns>A list of songs with the specified danceability rating.
     /// If the list is empty, no songs were found with the specified danceability rating.</returns>
-    public List<Song> getSongsByDanceability(double danceability)
+    public List<Song> GetSongsByDanceability(double danceability)
     {
         Console.WriteLine($"Searching for songs with danceability rating of {danceability}\n");
         var songs = _context.Songs

@@ -19,7 +19,7 @@ public class UserController
     /// Retrieves all users from the database.
     /// </summary>
     /// <returns>A list of all users.</returns>
-    public List<User> getAllUsers()
+    public List<User> GetAllUsers()
     {
         Console.WriteLine("Searching for all users:\n");
         var users = _context.Users.ToList();
@@ -36,7 +36,7 @@ public class UserController
     /// </summary>
     /// <param name="username">The username of the user to retrieve.</param>
     /// <returns>The user with the specified username, or null if not found.</returns>
-    public User getUser(string username)
+    public User? GetUser(string username)
     {
         Console.WriteLine($"Searching for user {username}\n");
 
@@ -58,7 +58,7 @@ public class UserController
     /// <param name="username">The username of the new user.</param>
     /// <param name="password">The password of the new user.</param>
     /// <returns>The newly created user, or null if the username already exists.</returns>
-    public User createNewUser(string username, string password)
+    public User? CreateNewUser(string username, string password)
     {
         Console.WriteLine($"Creating new user {username}\n");
 
@@ -87,7 +87,7 @@ public class UserController
     /// </summary>
     /// <param name="username">The username of the user to delete.</param>
     /// <returns>True if the user was successfully deleted, false otherwise.</returns>
-    public bool deleteUser(string username)
+    public bool DeleteUser(string username)
     {
         Console.WriteLine($"Attempting to delete {username}\n");
 
