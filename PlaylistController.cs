@@ -6,7 +6,7 @@ public class PlaylistController
     public PlaylistController()
     {
         // Initiallize a playlist object
-        this.playlist = new Playlist(); // 
+        //this.playlist = new Playlist(); // 
 
     }
 }
