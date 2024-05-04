@@ -19,13 +19,13 @@ static partial class Program
         // Application.Run(new Form1());
 
 
-        //testSongController();
+        //TestSongController();
 
-        //testAlbumController();
+        //TestAlbumController();
 
-        //testUserController();
+        //TestUserController();
 
-        testPlaylistController();
+        TestPlaylistController();
 
 
 
@@ -36,7 +36,7 @@ static partial class Program
 
     }
 
-    public static void testSongController()
+    public static void TestSongController()
     {
         SongController songController = new();
         // Test all methods for songController:
@@ -46,7 +46,7 @@ static partial class Program
         songController.GetSongsByDanceability(.466);
     }
 
-    public static void testAlbumController()
+    public static void TestAlbumController()
     {
         AlbumController albumController = new();
 
@@ -56,7 +56,7 @@ static partial class Program
 
     }
 
-    public static void testUserController()
+    public static void TestUserController()
     {
         UserController userController = new();
 
@@ -67,7 +67,7 @@ static partial class Program
         userController.DeleteUser("joey");
     }
 
-    public static void testPlaylistController()
+    public static void TestPlaylistController()
     {
         PlaylistController playlistController = new();
 
