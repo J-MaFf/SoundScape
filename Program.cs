@@ -22,7 +22,8 @@ static partial class Program
         QueryController queryController = new();
         // QueryController.ListSongsByArtist();
         // QueryController.ListAlbumsBySong("Hello");
-        QueryController.ListSongsByDanceablity();
+        //QueryController.ListSongsByDanceablity();
+        QueryController.ListSongsBy(s => s.Artists == "Red Hot Chili Peppers");
 
         // Wait for user to end program
         Console.WriteLine("Press any key to exit.");

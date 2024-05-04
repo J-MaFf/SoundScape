@@ -3,6 +3,20 @@ using Microsoft.Identity.Client;
 
 public class QueryController
 {
+
+
+    public static void ListSongsBy(Func<Song, bool> filter)
+    {
+        using var context = new CompsciprojectContext();
+
+        var songs = context.Songs
+            .Where(filter) // Filter songs by the provided condition
+            .Select(s => s.Trackname)
+            .Distinct()
+            .ToList(); // Execute the query and get the results as a List
+
+        songs.ForEach(Console.WriteLine);
+    }
     public static void ListSongsByArtist()
     {
         using CompsciprojectContext context = new();
