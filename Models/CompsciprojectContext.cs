@@ -114,8 +114,6 @@ public partial class CompsciprojectContext : DbContext
 
             entity.HasIndex(e => e.TrackId, "TrackID").IsUnique();
 
-
-
             entity.Property(e => e.TrackId)
                 .HasMaxLength(128)
                 .IsUnicode(false)
@@ -125,9 +123,6 @@ public partial class CompsciprojectContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("AlbumID");
 
-
-
-
             entity.Property(e => e.Albumname).IsUnicode(false);
             entity.Property(e => e.Artists).IsUnicode(false);
             entity.Property(e => e.Genre).IsUnicode(false);
@@ -136,6 +131,11 @@ public partial class CompsciprojectContext : DbContext
             entity.Property<double?>(e => e.Danceability)
                 .HasColumnName("Danceability");
 
+            entity.Property<bool?>(e => e.Profanity)
+                .HasColumnName("Profanity");
+
+            entity.Property<int?>(e => e.Duration)
+                .HasColumnName("Duration");
 
             entity.HasOne(d => d.Album).WithMany(p => p.Songs)
                 .HasForeignKey(d => d.AlbumId)
