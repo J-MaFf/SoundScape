@@ -18,15 +18,50 @@ static partial class Program
         // ApplicationConfiguration.Initialize();
         // Application.Run(new Form1());
 
-        /// Testing Query Controller
-        QueryController queryController = new();
-        // QueryController.ListSongsByArtist();
-        // QueryController.ListAlbumsBySong("Hello");
-        QueryController.ListSongsByDanceablity();
+
+        //testSongController();
+
+        //testAlbumController();
+
+        testUserController();
+
+
+
 
         // Wait for user to end program
         Console.WriteLine("Press any key to exit.");
         Console.ReadKey();
 
+    }
+
+    public static void testSongController()
+    {
+        SongController songController = new();
+        // Test all methods for songController:
+        songController.ListSongsByArtist("red hot chili peppers");
+        songController.ListSongsByAlbum("back in black");
+        songController.ListSongsByName("Back in black");
+        songController.ListSongsByDanceability(.466);
+    }
+
+    public static void testAlbumController()
+    {
+        AlbumController albumController = new();
+
+        // Test all methods for albumController
+        albumController.ListAlbumsByName("2014 Forest Hills Drive");
+        albumController.ListAlbumsByArtist("J. Cole");
+
+    }
+
+    public static void testUserController()
+    {
+        UserController userController = new();
+
+        // Test all methods for userController
+        userController.ListAllUsers();
+        userController.CreateNewUser("joey", "1234");
+        userController.GetUser("joey");
+        userController.DeleteUser("joey");
     }
 }
