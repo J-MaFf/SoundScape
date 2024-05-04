@@ -23,7 +23,9 @@ static partial class Program
 
         //testAlbumController();
 
-        testUserController();
+        //testUserController();
+
+        testPlaylistController();
 
 
 
@@ -38,10 +40,10 @@ static partial class Program
     {
         SongController songController = new();
         // Test all methods for songController:
-        songController.ListSongsByArtist("red hot chili peppers");
-        songController.ListSongsByAlbum("back in black");
-        songController.ListSongsByName("Back in black");
-        songController.ListSongsByDanceability(.466);
+        songController.getSongsByArtist("red hot chili peppers");
+        songController.getSongsByAlbum("back in black");
+        songController.getSongsByName("Back in black");
+        songController.getSongsByDanceability(.466);
     }
 
     public static void testAlbumController()
@@ -59,9 +61,19 @@ static partial class Program
         UserController userController = new();
 
         // Test all methods for userController
-        userController.ListAllUsers();
-        userController.CreateNewUser("joey", "1234");
-        userController.GetUser("joey");
-        userController.DeleteUser("joey");
+        userController.getAllUsers();
+        userController.createNewUser("joey", "1234");
+        userController.getUser("joey");
+        userController.deleteUser("joey");
+    }
+
+    public static void testPlaylistController()
+    {
+        PlaylistController playlistController = new();
+
+        // Test all methods for playlistController
+        playlistController.getPlaylistsByUser("joey");
+        playlistController.getPlaylistsByName("joey's playlist");
+        playlistController.getPlaylistSongs("1");
     }
 }

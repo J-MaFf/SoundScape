@@ -11,7 +11,7 @@ public partial class PlaylistSong
 
     public string? TrackId { get; set; }
 
-    public int? Order { get; set; }
+    public int Order { get; set; }
 
     public virtual Playlist? Playlist { get; set; }
 }

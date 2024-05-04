@@ -9,7 +9,7 @@ public class SongController
         _context = new CompsciprojectContext();
     }
 
-    public List<Song> ListSongsByArtist(string artist)
+    public List<Song> getSongsByArtist(string artist)
     {
         Console.WriteLine($"Searching for songs by {artist}:\n");
         var songs = _context.Songs
@@ -23,7 +23,7 @@ public class SongController
         return songs;
     }
 
-    public List<Song> ListSongsByAlbum(string album)
+    public List<Song> getSongsByAlbum(string album)
     {
         Console.WriteLine($"Searching for songs in album {album}:\n");
         var songs = _context.Songs
@@ -36,7 +36,7 @@ public class SongController
         return songs;
     }
 
-    public List<Song> ListSongsByName(string name)
+    public List<Song> getSongsByName(string name)
     {
         Console.WriteLine($"Searching for Songs named {name}\n");
         var songs = _context.Songs
@@ -49,7 +49,7 @@ public class SongController
         return songs;
     }
 
-    public List<Song> ListSongsByDanceability(double danceability)
+    public List<Song> getSongsByDanceability(double danceability)
     {
         Console.WriteLine($"Searching for songs with danceability rating of {danceability}\n");
         var songs = _context.Songs
