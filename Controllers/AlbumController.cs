@@ -27,11 +27,18 @@ public class AlbumController
     public List<Album> ListAlbumsByArtist(string artist)
     {
         Console.WriteLine($"Searching for albums by artist {artist}");
-        var albums = _context.Albums
-            .Where(a => a.Artist == artist)
-            .ToList();
 
-        albums.ForEach(a => Console.WriteLine(a.Name));
+        var albums = _context.Albums
+            .Join(
+                _context.Songs, // The table to join with
+                album => album.AlbumId, // The key selector for the outer sequence
+                song => song.AlbumId, // The key selector for the inner sequence
+                (album, song) => new { Album = album, Song = song }
+            )
+            .Where(albumAndSong => albumAndSong.Song.Artists == artist)
+            .Select(albumAndSong => albumAndSong.Album)
+            .Distinct()
+            .ToList();
 
         Console.WriteLine($"There were {albums.Count} album(s) found by artist {artist}");
 
