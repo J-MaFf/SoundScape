@@ -97,6 +97,9 @@ public partial class CompsciprojectContext : DbContext
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .HasColumnName("TrackID");
+            entity.Property<int?>(e => e.Order) // int? might throw errors
+                .IsUnicode(false)
+                .HasColumnName("Order");
 
             entity.HasOne(d => d.Playlist).WithMany(p => p.PlaylistSongs)
                 .HasForeignKey(d => d.PlaylistId)
