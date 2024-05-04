@@ -60,20 +60,4 @@ public class SongController
         return songs;
     }
 
-    public Song UpdateSong(string oldSongName, string newSongName)
-    {
-        var song = _context.Songs.FirstOrDefault(s => s.Trackname == oldSongName);
-
-        if (song != null)
-        {
-            song.Trackname = newSongName;
-            _context.SaveChanges();
-        }
-        else
-        {
-            Console.WriteLine("Song not found.");
-        }
-
-        return song;
-    }
 }
