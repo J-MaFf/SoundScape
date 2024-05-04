@@ -56,9 +56,9 @@ public class SongController
             .Where(s => s.Danceability == danceability)
             .ToList();
 
-        songs.ForEach(s => Console.WriteLine());
+        songs.ForEach(s => Console.WriteLine(s.Trackname));
 
-        Console.WriteLine($"There are {songs.count} songs with danceability rating of {danceability}\n");
+        Console.WriteLine($"There are {songs.Count} songs with danceability rating of {danceability}\n");
         return songs;
     }
 
