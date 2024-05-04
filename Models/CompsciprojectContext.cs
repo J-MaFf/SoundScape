@@ -129,13 +129,16 @@ public partial class CompsciprojectContext : DbContext
             entity.Property(e => e.Trackname).IsUnicode(false);
 
             entity.Property<double?>(e => e.Danceability)
-                .HasColumnName("Danceability");
+                .HasColumnName("Danceability")
+                .IsUnicode(false);
 
             entity.Property<bool?>(e => e.Profanity)
-                .HasColumnName("Profanity");
+                .HasColumnName("Profanity")
+                .IsUnicode(false);
 
             entity.Property<int?>(e => e.Duration)
-                .HasColumnName("Duration");
+                .HasColumnName("Duration")
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Album).WithMany(p => p.Songs)
                 .HasForeignKey(d => d.AlbumId)
