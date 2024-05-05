@@ -75,8 +75,30 @@ class Tests {
 
         // Test all methods for userController
         userController.CreateNewUser("joey", "1234");
-        userController.GetUser("joey");
+        var user = userController.GetUser("joey");
+        var anotherUser = userController.CreateNewUser("matthew", "5678");
+        var users = userController.SearchString(""); // Search for all users
+        var sortedByMinutes = UserController.SortByMinutes(users);
+
         userController.DeleteUser("joey");
+        userController.DeleteUser("matthew");
+
+        // Print results
+        // Console.WriteLine("User joey: ");
+        // Console.WriteLine(user.Username);
+        // Console.WriteLine("\n\n");
+
+        // Console.WriteLine("User matthew: ");
+        // Console.WriteLine(anotherUser.Username);
+        // Console.WriteLine("\n\n");
+
+        // Console.WriteLine("All users: ");
+        // foreach (var u in users) Console.WriteLine(u.Username);
+        // Console.WriteLine("\n\n");
+
+        // Console.WriteLine("Users sorted by minutes listened: ");
+        // foreach (var u in sortedByMinutes) Console.WriteLine(u.Username);
+        // Console.WriteLine("\n\n");
 
         return true;
     }

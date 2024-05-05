@@ -33,9 +33,9 @@ static partial class Program
         pass = Tests.TestAlbumController();
         Console.WriteLine("AlbumController test passed: " + pass);
         
-        
-        // pass = Tests.TestUserController();
-        // Console.WriteLine("UserController test passed: " + pass);
+        pass = Tests.TestUserController();
+        Console.WriteLine("UserController test passed: " + pass);
+
         // pass = Tests.TestPlaylistController();
         // Console.WriteLine("PlaylistController test passed: " + pass);
         

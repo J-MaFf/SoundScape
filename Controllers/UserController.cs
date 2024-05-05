@@ -18,19 +18,19 @@ public class UserController
     {
         if(string.IsNullOrWhiteSpace(keyword))
         {
-            return _context.Users.ToList();
+            return [.. _context.Users]; // Used collection expression (for compiler warning)
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
-        return _context.Users.Where(user =>
+        return [.. _context.Users.Where(user =>
             user.Username != null && user.Username.ToLower().Contains(lowerKeyword) ||
             user.Playlists != null && user.Playlists.Any(playlist =>
                 playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword))
-        ).ToList();
+        )];
     }
 
     public static List<User> SortByMinutes(List<User> users)
     {
-        return users.OrderByDescending(user => user.MinutesListened).ToList();
+        return [.. users.OrderByDescending(user => user.MinutesListened)];
     }
 
     /// <summary>
