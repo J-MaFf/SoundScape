@@ -11,7 +11,7 @@ class Tests {
         var sortedByDuration = SongController.SortByDuration(fearless);
         var sortedByDanceability = SongController.SortByDanceability(rhcp);
         var filteredByProfanity = SongController.FilterByProfanity(fearless);
-        var filteredByGenre = SongController.FilterByGenre(rhcp, "rock");
+        var filteredByGenre = SongController.FilterByGenre(fearless, "pop");
 
         // Print results
         Console.WriteLine("fearless search results: ");
@@ -34,7 +34,7 @@ class Tests {
         foreach (var song in filteredByProfanity) Console.WriteLine(song.Trackname);
         Console.WriteLine("\n\n");
 
-        Console.WriteLine("rhcp filtered by genre: ");
+        Console.WriteLine("fearless filtered by genre: ");
         foreach (var song in filteredByGenre) Console.WriteLine(song.Trackname);
         Console.WriteLine("\n\n");
 

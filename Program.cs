@@ -26,20 +26,17 @@ static partial class Program
 
     public static void TestControllers()
     {
-        bool pass = true;
-        while (pass)
-        {
-            pass = Tests.TestSongController();
-            Console.WriteLine("SongController test passed: " + pass);
-            
-            
-            // pass = Tests.TestAlbumController();
-            // Console.WriteLine("AlbumController test passed: " + pass);
-            // pass = Tests.TestUserController();
-            // Console.WriteLine("UserController test passed: " + pass);
-            // pass = Tests.TestPlaylistController();
-            // Console.WriteLine("PlaylistController test passed: " + pass);
-        }
+    
+        bool pass = Tests.TestSongController();
+        Console.WriteLine("SongController test passed: " + pass);
+        
+        // pass = Tests.TestAlbumController();
+        // Console.WriteLine("AlbumController test passed: " + pass);
+        // pass = Tests.TestUserController();
+        // Console.WriteLine("UserController test passed: " + pass);
+        // pass = Tests.TestPlaylistController();
+        // Console.WriteLine("PlaylistController test passed: " + pass);
+        
     }
 
 }
