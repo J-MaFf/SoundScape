@@ -69,6 +69,7 @@ public class PlaylistController
             return null;
         }
 
+        Console.WriteLine($"Playlist named {playlistName} by user {username} found\n");
         return playlist;
     }
 
@@ -198,7 +199,7 @@ public class PlaylistController
             return null;
         }
 
-        Console.WriteLine($"Adding song {trackId} to playlist {playlistId}:\n");
+        Console.WriteLine($"Adding song named {track.Trackname} with TrackId {trackId} to playlist named {playlist.PlaylistName} with PlaylistId {playlistId}:\n");
 
         // Calculate the order for the new song
         int order = 1;
