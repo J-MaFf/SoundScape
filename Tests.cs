@@ -105,12 +105,51 @@ class Tests {
 
     public static bool TestPlaylistController()
     {
-        PlaylistController playlistController = new();
+        UserController uc = new();
+        uc.CreateNewUser("joey", "1234");
+        PlaylistController pc = new();
 
+        pc.EraseAllPlaylistsAndPlaylistSongs(); // Erase all playlists and playlist songs
         // Test all methods for playlistController
 
-        var coolPlaylist = playlistController.CreatePlaylist("Joey", "Cool playlist", "The absolute best playlist, definitively");
-        var playlists = playlistController.SearchString("Cool playlist"); 
+        var coolPlaylist = pc.CreatePlaylist("Joey", "Cool playlist", "The absolute best playlist, definitively");
+        var lamePlaylist = pc.CreatePlaylist("Joey", "Lame playlist", "The absolute worst playlist, definitively");
+
+        // Add some songs to the playlists
+        pc.AddSongToPlaylist(coolPlaylist.PlaylistId, "0000vdREvCVMxbQTkS888c");
+        pc.AddSongToPlaylist(coolPlaylist.PlaylistId, "001YQlnDSduXd5LgBd66gT");
+        pc.AddSongToPlaylist(lamePlaylist.PlaylistId, "00B7SBwrjbycLMOgAmeIU8");
+        pc.AddSongToPlaylist(lamePlaylist.PlaylistId, "00hTMcTeaaMtjBCV30yAm9");
+        pc.AddSongToPlaylist(lamePlaylist.PlaylistId, "00nmZvZRyzQiYe2tAcDDUb");
+
+
+
+        var playlistSearchResult = pc.SearchString("Cool playlist"); // Search for playlists with "Cool playlist" in the name
+        var joeysPlaylists = pc.SearchString("Joey"); // Search for playlists created by Joey
+        var sortedByCreationDate = pc.SortByCreationDate(joeysPlaylists);
+        var sortedByTotalSongs = pc.RemoveSongFromPlaylist(lamePlaylist.PlaylistId, "00nmZvZRyzQiYe2tAcDDUb");
+
+        // Print results
+        Console.WriteLine("Cool playlist search results: ");
+        foreach (var playlist in playlistSearchResult) Console.WriteLine(playlist.PlaylistName);
+        Console.WriteLine("\n\n");
+
+        Console.WriteLine("Joeys playlists: ");
+        foreach (var playlist in joeysPlaylists) Console.WriteLine(playlist.PlaylistName);
+        Console.WriteLine("\n\n");
+
+        Console.WriteLine("Joeys playlists sorted by creation date: ");
+        foreach (var playlist in sortedByCreationDate) Console.WriteLine(playlist.PlaylistName);
+        Console.WriteLine("\n\n");
+
+        Console.WriteLine("Lame playlist with song removed: ");
+        // print lamePlaylist songs
+        var lamePlaylistSongs = pc.GetSongsByID([.. lamePlaylist.PlaylistSongs]);
+        foreach (var song in lamePlaylistSongs) Console.WriteLine(song.Trackname);
+        Console.WriteLine("\n\n");
+
+        uc.DeleteUser("joey");
+
 
         return true;
 

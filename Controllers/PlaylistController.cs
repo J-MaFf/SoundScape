@@ -212,4 +212,16 @@ public class PlaylistController
         Console.WriteLine($"Song {song.Trackname} removed from playlist {playlist.PlaylistName}\n");
         return true;
     }
+
+    public bool EraseAllPlaylistsAndPlaylistSongs()
+    {
+        Console.WriteLine("Erasing all playlists and playlist songs:\n");
+
+        _context.Playlists.RemoveRange(_context.Playlists);
+        _context.PlaylistSongs.RemoveRange(_context.PlaylistSongs);
+        _context.SaveChanges();
+
+        Console.WriteLine("All playlists and playlist songs erased\n");
+        return true;
+    }
 }
