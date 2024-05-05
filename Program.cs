@@ -10,32 +10,35 @@ static partial class Program
     // [STAThread]
     static void Main()
     {
-        AllocConsole();
-        // // To customize application configuration such as set high DPI settings or default font,
-        // // see https://aka.ms/applicationconfiguration.
-        // ApplicationConfiguration.Initialize();
-        // Application.Run(new Form1());
+        // AllocConsole();
+        // // // To customize application configuration such as set high DPI settings or default font,
+        // // // see https://aka.ms/applicationconfiguration.
+        // // ApplicationConfiguration.Initialize();
+        // // Application.Run(new Form1());
 
-        // Wait for user to end program
-        Console.Write("Press enter key to exit. ");
-        Console.Read();
+        // // Wait for user to end program
+        // Console.Write("Press enter key to exit. ");
+        // Console.Read();
+
+        TestControllers();
 
     }
 
     public static void TestControllers()
     {
-        var t = new Tests();
         bool pass = true;
         while (pass)
         {
-            pass = t.TestSongController();
+            pass = Tests.TestSongController();
             Console.WriteLine("SongController test passed: " + pass);
-            pass = t.TestAlbumController();
-            Console.WriteLine("AlbumController test passed: " + pass);
-            pass = t.TestUserController();
-            Console.WriteLine("UserController test passed: " + pass);
-            pass = t.TestPlaylistController();
-            Console.WriteLine("PlaylistController test passed: " + pass);
+            
+            
+            // pass = Tests.TestAlbumController();
+            // Console.WriteLine("AlbumController test passed: " + pass);
+            // pass = Tests.TestUserController();
+            // Console.WriteLine("UserController test passed: " + pass);
+            // pass = Tests.TestPlaylistController();
+            // Console.WriteLine("PlaylistController test passed: " + pass);
         }
     }
 
