@@ -67,13 +67,62 @@ static partial class Program
         userController.DeleteUser("joey");
     }
 
-    public static void TestPlaylistController()
+    public static bool TestPlaylistController()
     {
         PlaylistController playlistController = new();
+        SongController songController = new();
+        UserController userController = new();
+
+        var playlist = playlistController.GetPlaylistsByUser("joey")[0];
+        playlistController.DeletePlaylist(playlist.PlaylistId);
+
+        userController.CreateNewUser("joey", "1234");
 
         // Test all methods for playlistController
         playlistController.GetPlaylistsByUser("joey");
-        playlistController.GetPlaylistsByName("joey's playlist");
-        playlistController.GetPlaylistSongs("1");
+
+        // Create a new playlist
+        var myPlaylist = playlistController.CreatePlaylist("joey", "My Playlist", "This is my playlist");
+
+        // Get the playlist we just created
+        var shouldBeSamePlaylist = playlistController.GetPlaylistByNameAndUser("My Playlist", "joey");
+
+        if (myPlaylist != null && myPlaylist == shouldBeSamePlaylist)
+        {
+            Console.WriteLine("Playlist was created and retrieved successfully");
+        }
+        else
+        {
+            Console.WriteLine("Playlist was not created");
+            return false;
+        }
+        // Get a song and add it to the playlist
+        var song = songController.GetSongsByName("Back in black")[0]; // Get the first song in the list
+        playlistController.AddSongToPlaylist(myPlaylist.PlaylistId, song.TrackId);
+        var anotherSong = songController.GetSongsByName("Californication")[0];
+        playlistController = new();
+        playlistController.AddSongToPlaylist(myPlaylist.PlaylistId, anotherSong.TrackId);
+
+        // View the songs in the playlist
+        var playlistSongs = playlistController.GetPlaylistSongs(myPlaylist.PlaylistId);
+
+        playlistSongs.ForEach(ps => Console.WriteLine(ps.TrackId));
+
+        // Remove a song from the playlist
+        playlistController.RemoveSongFromPlaylist(myPlaylist.PlaylistId, song.TrackId);
+
+        // View the songs in the playlist
+        playlistSongs = playlistController.GetPlaylistSongs(myPlaylist.PlaylistId);
+
+        playlistSongs.ForEach(ps => Console.WriteLine(ps.TrackId, ps.Order));
+
+        // Delete the playlist (will also delete the playlist songs)
+        playlistController.DeletePlaylist(myPlaylist.PlaylistId);
+
+        return true;
+
+
+
+
     }
 }
