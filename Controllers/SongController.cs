@@ -23,9 +23,11 @@ public class SongController
             return [.. _context.Songs]; // Return all songs as List if keyword is empty
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return [.. _context.Songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
                                 (s.Artists != null && s.Artists.ToLower().Contains(lowerKeyword)) ||
                                 (s.Album != null && s.Album.Name.ToLower().Contains(lowerKeyword)))];
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
     public static List<Song> SortByDuration(List<Song> songs)
     {
@@ -42,6 +44,8 @@ public class SongController
     }
     public static List<Song> FilterByGenre(List<Song> songs, string genre)
     {
-        return songs.Where(song => song.Genre.ToLower() == genre.ToLower()).ToList();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return songs.Where(song => song.Genre.Equals(genre, StringComparison.CurrentCultureIgnoreCase)).ToList();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 }
