@@ -1,5 +1,7 @@
 using COMPSCI366.Models;
 namespace SoundScape.Controllers;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
 
 /// <summary>
 /// Represents a controller for managing songs.
@@ -23,9 +25,9 @@ public class SongController
             return [.. _context.Songs]; // Return all songs as List if keyword is empty
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
-        return [.. _context.Songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
-                                (s.Artists != null && s.Artists.ToLower().Contains(lowerKeyword)) ||
-                                (s.Album != null && s.Album.Name.ToLower().Contains(lowerKeyword)))];
+        return [.. _context.Songs.Where(s => (s.Trackname != null && s.Trackname.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase)) ||
+                                (s.Artists != null && s.Artists.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase)) ||
+                                (s.Album != null && s.Album.Name != null && s.Album.Name.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase)))];
     }
     public static List<Song> SortByDuration(List<Song> songs)
     {
@@ -42,6 +44,6 @@ public class SongController
     }
     public static List<Song> FilterByGenre(List<Song> songs, string genre)
     {
-        return songs.Where(song => song.Genre.ToLower() == genre.ToLower()).ToList();
+        return songs.Where(song => song.Genre.Equals(genre, StringComparison.CurrentCultureIgnoreCase)).ToList();
     }
 }
