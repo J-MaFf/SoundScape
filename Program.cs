@@ -30,8 +30,10 @@ static partial class Program
         bool pass = Tests.TestSongController();
         Console.WriteLine("SongController test passed: " + pass);
         
-        // pass = Tests.TestAlbumController();
-        // Console.WriteLine("AlbumController test passed: " + pass);
+        pass = Tests.TestAlbumController();
+        Console.WriteLine("AlbumController test passed: " + pass);
+        
+        
         // pass = Tests.TestUserController();
         // Console.WriteLine("UserController test passed: " + pass);
         // pass = Tests.TestPlaylistController();

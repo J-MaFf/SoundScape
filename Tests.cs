@@ -14,29 +14,29 @@ class Tests {
         var filteredByGenre = SongController.FilterByGenre(fearless, "pop");
 
         // Print results
-        Console.WriteLine("fearless search results: ");
-        foreach (var song in fearless) Console.WriteLine(song.Trackname);
-        Console.WriteLine("\n\n");
+        // Console.WriteLine("fearless search results: ");
+        // foreach (var song in fearless) Console.WriteLine(song.Trackname);
+        // Console.WriteLine("\n\n");
         
-        Console.WriteLine("rhcp search results: ");
-        foreach (var song in rhcp) Console.WriteLine(song.Trackname);
-        Console.WriteLine("\n\n");
+        // Console.WriteLine("rhcp search results: ");
+        // foreach (var song in rhcp) Console.WriteLine(song.Trackname);
+        // Console.WriteLine("\n\n");
         
-        Console.WriteLine("fearless sorted by duration: ");
-        foreach (var song in sortedByDuration) Console.WriteLine(song.Trackname);
-        Console.WriteLine("\n\n");
+        // Console.WriteLine("fearless sorted by duration: ");
+        // foreach (var song in sortedByDuration) Console.WriteLine(song.Trackname);
+        // Console.WriteLine("\n\n");
 
-        Console.WriteLine("rhcp sorted by danceability: ");
-        foreach (var song in sortedByDanceability) Console.WriteLine(song.Trackname);
-        Console.WriteLine("\n\n");
+        // Console.WriteLine("rhcp sorted by danceability: ");
+        // foreach (var song in sortedByDanceability) Console.WriteLine(song.Trackname);
+        // Console.WriteLine("\n\n");
 
-        Console.WriteLine("fearless filtered by profanity: ");
-        foreach (var song in filteredByProfanity) Console.WriteLine(song.Trackname);
-        Console.WriteLine("\n\n");
+        // Console.WriteLine("fearless filtered by profanity: ");
+        // foreach (var song in filteredByProfanity) Console.WriteLine(song.Trackname);
+        // Console.WriteLine("\n\n");
 
-        Console.WriteLine("fearless filtered by genre: ");
-        foreach (var song in filteredByGenre) Console.WriteLine(song.Trackname);
-        Console.WriteLine("\n\n");
+        // Console.WriteLine("fearless filtered by genre: ");
+        // foreach (var song in filteredByGenre) Console.WriteLine(song.Trackname);
+        // Console.WriteLine("\n\n");
 
         return true;
 
@@ -48,7 +48,24 @@ class Tests {
         AlbumController albumController = new();
 
         // Test all methods for albumController
-       return true;
+        var fearless = albumController.SearchString("fearless");
+        var sortedByDuration = AlbumController.SortByDuration(fearless);
+        var sortedByTotalSongs = AlbumController.SortByTotalSongs(fearless);
+
+        // Print results
+        // Console.WriteLine("fearless search results: ");
+        // foreach (var album in fearless) Console.WriteLine(album.Name);
+        // Console.WriteLine("\n\n");
+
+        // Console.WriteLine("fearless sorted by duration: ");
+        // foreach (var album in sortedByDuration) Console.WriteLine(album.Name);
+        // Console.WriteLine("\n\n");
+
+        // Console.WriteLine("fearless sorted by total songs: ");
+        // foreach (var album in sortedByTotalSongs) Console.WriteLine(album.Name);
+        // Console.WriteLine("\n\n");
+
+        return true;
 
     }
 
