@@ -28,7 +28,7 @@ public class UserController
         ).ToList();
     }
 
-    public List<User> SortByMinutes(List<User> users)
+    public static List<User> SortByMinutes(List<User> users)
     {
         return users.OrderByDescending(user => user.MinutesListened).ToList();
     }
