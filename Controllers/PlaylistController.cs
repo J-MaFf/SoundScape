@@ -49,6 +49,28 @@ public class PlaylistController
 
         return playlists;
     }
+    /// <summary>
+    /// Retrieves a playlist with the specified name and user.
+    /// </summary>
+    /// <param name="playlistName"></param>
+    /// <param name="username"></param>
+    /// <returns>The playlist with the specified name and user. If return value is null,
+    /// then no playlist with the specified name and user was found.</returns>
+    public Playlist? GetPlaylistByNameAndUser(string playlistName, string username)
+    {
+        Console.WriteLine($"Searching for playlist named {playlistName} by user {username}:\n");
+        var playlist = _context.Playlists
+            .Where(p => p.PlaylistName == playlistName && p.Username == username)
+            .FirstOrDefault();
+
+        if (playlist == null)
+        {
+            Console.WriteLine($"Playlist named {playlistName} by user {username} not found\n");
+            return null;
+        }
+
+        return playlist;
+    }
 
     /// <summary>
     /// Retrieves a list of songs in the specified playlist.
@@ -222,7 +244,17 @@ public class PlaylistController
             return false;
         }
 
+
+
         _context.PlaylistSongs.Remove(playlistSong);
+
+        // Change the order of the songs after the removed song
+        var playlistSongs = _context.PlaylistSongs
+            .Where(ps => ps.PlaylistId == playlistId && ps.Order > playlistSong.Order)
+            .ToList();
+
+        playlistSongs.ForEach(ps => ps.Order--);
+
         _context.SaveChanges();
 
         Console.WriteLine($"Song {trackId} removed from playlist {playlistId}\n");
