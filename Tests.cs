@@ -1,3 +1,6 @@
+using SoundScape.Controllers;
+namespace SoundScape;
+
 class Tests {
     public static bool TestSongController()
     {
