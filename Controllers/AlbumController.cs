@@ -1,5 +1,5 @@
 using COMPSCI366.Models;
-using Microsoft.VisualBasic.Devices;
+namespace SoundScape.Controllers;
 
 public class AlbumController
 {

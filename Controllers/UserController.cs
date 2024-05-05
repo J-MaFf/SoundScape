@@ -1,6 +1,5 @@
 using COMPSCI366.Models;
-using Microsoft.VisualBasic.Devices;
-
+namespace SoundScape.Controllers;
 /// <summary>
 /// Represents a controller for managing user-related operations.
 /// </summary>

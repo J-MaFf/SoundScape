@@ -1,4 +1,5 @@
 using COMPSCI366.Models;
+namespace SoundScape.Controllers;
 
 /// <summary>
 /// Represents a controller for managing songs.
