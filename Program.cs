@@ -1,6 +1,4 @@
 namespace SoundScape;
-using System.Threading;
-
 static partial class Program
 {
     [System.Runtime.InteropServices.LibraryImport("kernel32.dll")]
@@ -21,6 +19,24 @@ static partial class Program
         // Wait for user to end program
         Console.Write("Press enter key to exit. ");
         Console.Read();
+
+    }
+
+    public static void TestControllers()
+    {
+        var t = new Tests();
+        bool pass = true;
+        while (pass)
+        {
+            pass = t.TestSongController();
+            Console.WriteLine("SongController test passed: " + pass);
+            pass = t.TestAlbumController();
+            Console.WriteLine("AlbumController test passed: " + pass);
+            pass = t.TestUserController();
+            Console.WriteLine("UserController test passed: " + pass);
+            pass = t.TestPlaylistController();
+            Console.WriteLine("PlaylistController test passed: " + pass);
+        }
     }
 
 }
