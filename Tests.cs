@@ -148,9 +148,9 @@ class Tests {
         foreach (var song in lamePlaylistSongs) Console.WriteLine(song.Trackname);
         Console.WriteLine("\n\n");
 
-        uc.DeleteUser("joey");
+        //uc.DeleteUser("joey");
 
-
+        pc.EraseAllPlaylistsAndPlaylistSongs(); // Erase all playlists and playlist songs
         return true;
 
     }

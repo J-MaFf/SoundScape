@@ -20,15 +20,23 @@ public class PlaylistController
             return _context.Playlists.ToList();
         }
         var lowerKeyword = keyword.ToLower(); // Case insensitive search
-        return _context.Playlists.Where(playlist =>
-            playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
-            playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
-            playlist.PlaylistSongs != null && GetSongsByID(playlist.PlaylistSongs.ToList()).Any(song =>
-                song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword) ||
-                song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword) ||
-                song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword)
+        var playlists = _context.Playlists
+            .Where(playlist =>
+                playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
+                playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword)
             )
-        ).ToList();
+            .ToList();
+
+        var filteredPlaylists = playlists
+            .Where(playlist => 
+                playlist.PlaylistSongs != null && GetSongsByID(playlist.PlaylistSongs.ToList()).Any(song =>
+                    song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword) ||
+                    song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword) ||
+                    song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword)
+                )
+            ).ToList();
+
+        return filteredPlaylists;
     }
     public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
