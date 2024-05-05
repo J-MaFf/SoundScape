@@ -25,11 +25,11 @@ public class AlbumController
             ))
         ).ToList();
     }
-    public List<Album> SortByDuration(List<Album> albums)
+    public static List<Album> SortByDuration(List<Album> albums)
     {
         return albums.OrderByDescending(album => album.Duration).ToList();
     }
-    public List<Album> SortByTotalSongs(List<Album> albums)
+    public static List<Album> SortByTotalSongs(List<Album> albums)
     {
         return albums.OrderByDescending(album => album.Totalsongs).ToList();
     }
