@@ -25,12 +25,12 @@ public class PlaylistController
         var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
         var songs = _context.Songs.Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
     
-        return _context.Playlists.Where(playlist =>
+        return [.. _context.Playlists.Where(playlist =>
             playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
             playlist.Description != null && playlist.Description.ToLower().Contains(lowerKeyword) ||
             playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
             songs.Any(song => song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword))
-        ).ToList();
+        )];
     }
     public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
