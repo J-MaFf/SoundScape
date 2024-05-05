@@ -82,12 +82,14 @@ public partial class CompsciprojectContext : DbContext
         // PLAYLIST SONG
         modelBuilder.Entity<PlaylistSong>(entity =>
         {
-            entity.HasKey(e => e.PlaylistSongId).HasName("PK_NewTable");
+            entity.HasKey(e => e.PlaylistSongId);
 
             entity.ToTable("PlaylistSongs", "dbo");
 
+            entity.HasIndex(e => e.PlaylistSongId, "PlaylistSongID").IsUnique();
+
             entity.Property(e => e.PlaylistSongId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("PlaylistSongID");
             entity.Property(e => e.PlaylistId)
                 .HasMaxLength(128)

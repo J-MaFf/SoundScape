@@ -81,13 +81,29 @@ public class PlaylistController
     /// then no songs were found in the playlist.</returns>
     public List<PlaylistSong> GetPlaylistSongs(string playlistId)
     {
-        Console.WriteLine($"Listing songs in playlist {playlistId}:\n");
+        var playlist = _context.Playlists.Find(playlistId);
+        if (playlist == null)
+        {
+            Console.WriteLine($"Playlist {playlistId} not found\n");
+            return [];
+        }
+        Console.WriteLine($"Listing songs in playlist {playlist.PlaylistName}:\n");
         var playlistSongs = _context.PlaylistSongs
             .Where(ps => ps.PlaylistId == playlistId)
             .ToList();
 
-        playlistSongs.ForEach(ps => Console.WriteLine(ps.TrackId));
-        Console.WriteLine($"There are {playlistSongs.Count} songs in playlist {playlistId}\n");
+        // Print the songs in the playlist
+        playlistSongs.ForEach(ps =>
+        {
+            var song = _context.Songs.Find(ps.TrackId);
+            if (song == null)
+            {
+                Console.WriteLine($"Song with ID {ps.TrackId} not found\n");
+                return;
+            }
+            Console.WriteLine($"{song.Trackname} - {song.Artists}\tOrder: {ps.Order}");
+        });
+        Console.WriteLine($"There are {playlistSongs.Count} songs in playlist {playlist.PlaylistName}\n");
 
         return playlistSongs;
     }
@@ -141,16 +157,14 @@ public class PlaylistController
     /// <returns>True if the playlist was successfully deleted, false otherwise.</returns>
     public bool DeletePlaylist(string playlistId)
     {
-        Console.WriteLine($"Deleting playlist {playlistId}:\n");
-        var playlist = _context.Playlists
-            .Where(p => p.PlaylistId == playlistId)
-            .FirstOrDefault();
+        var playlist = _context.Playlists.Find(playlistId);
 
         if (playlist == null)
         {
             Console.WriteLine($"Playlist {playlistId} not found\n");
             return false;
         }
+        Console.WriteLine($"Deleting playlist {playlist.PlaylistName}:\n");
 
         // Remove all songs from the playlist
         var playlistSongs = _context.PlaylistSongs
@@ -164,7 +178,7 @@ public class PlaylistController
         // Verify that all songs were removed
         if (_context.PlaylistSongs.Any(ps => ps.PlaylistId == playlistId))
         {
-            Console.WriteLine($"Failed to remove all songs from playlist {playlistId}\n");
+            Console.WriteLine($"Failed to remove all songs from playlist {playlist.PlaylistName} with ID {playlistId}\n");
             return false;
         }
 
@@ -220,7 +234,7 @@ public class PlaylistController
         _context.PlaylistSongs.Add(playlistSong);
         _context.SaveChanges();
 
-        Console.WriteLine($"Song named {track.Trackname} with TrackId {trackId} added to playlist {playlistId}\n");
+        Console.WriteLine($"Song named {track.Trackname} added to playlist named {playlist.PlaylistName}\n");
 
         return playlistSong;
     }
@@ -233,7 +247,16 @@ public class PlaylistController
     /// <returns>True if the song was successfully removed, false otherwise.</returns>
     public bool RemoveSongFromPlaylist(string playlistId, string trackId)
     {
-        Console.WriteLine($"Removing song {trackId} from playlist {playlistId}:\n");
+        var playlist = _context.Playlists.Find(playlistId);
+        var song = _context.Songs.Find(trackId);
+
+        if (playlist == null || song == null)
+        {
+            Console.WriteLine($"Playlist with ID {playlistId} or song with ID {trackId} not found\n");
+            return false;
+        }
+
+        Console.WriteLine($"Removing song {song.Trackname} from playlist {playlist.PlaylistName}:\n");
 
         var playlistSong = _context.PlaylistSongs
             .Where(ps => ps.PlaylistId == playlistId && ps.TrackId == trackId)
@@ -241,11 +264,9 @@ public class PlaylistController
 
         if (playlistSong == null)
         {
-            Console.WriteLine($"Song {trackId} not found in playlist {playlistId}\n");
+            Console.WriteLine($"Song {trackId} not found in playlist {playlist.PlaylistName}\n");
             return false;
         }
-
-
 
         _context.PlaylistSongs.Remove(playlistSong);
 
@@ -255,11 +276,8 @@ public class PlaylistController
             .ToList();
 
         playlistSongs.ForEach(ps => ps.Order--);
-
         _context.SaveChanges();
-
-        Console.WriteLine($"Song {trackId} removed from playlist {playlistId}\n");
-
+        Console.WriteLine($"Song {song.Trackname} removed from playlist {playlist.PlaylistName}\n");
         return true;
     }
 }

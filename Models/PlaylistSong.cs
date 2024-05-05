@@ -7,7 +7,7 @@ public partial class PlaylistSong
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long PlaylistSongId { get; set; }
+    public string PlaylistSongId { get; set; } = null!;
 
     public string? PlaylistId { get; set; }
 
