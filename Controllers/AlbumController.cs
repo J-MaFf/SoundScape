@@ -17,13 +17,13 @@ public class AlbumController
             return _context.Albums.ToList();
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
-        return _context.Albums.Where(album =>
+        return [.. _context.Albums.Where(album =>
             (album.Name != null && album.Name.ToLower().Contains(lowerKeyword)) ||
             (album.Songs != null && album.Songs.Any(song =>
                 (song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword)) ||
                 (song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword))
             ))
-        ).ToList();
+        )];
     }
     public static List<Album> SortByDuration(List<Album> albums)
     {
