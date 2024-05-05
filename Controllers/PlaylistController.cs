@@ -19,11 +19,10 @@ public class PlaylistController
             return _context.Playlists.ToList();
         }
         var lowerKeyword = keyword.ToLower(); // Case insensitive search
-        SongController songController = new SongController();
         return _context.Playlists.Where(playlist =>
             playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
             playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
-            playlist.PlaylistSongs != null && songController.GetSongsByID(playlist.PlaylistSongs.ToList()).Any(song =>
+            playlist.PlaylistSongs != null && GetSongsByID(playlist.PlaylistSongs.ToList()).Any(song =>
                 song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword) ||
                 song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword) ||
                 song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword)
@@ -33,6 +32,11 @@ public class PlaylistController
     public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
         return _context.Playlists.OrderByDescending(playlist => playlist.CreationDate).ToList();
+    }
+    public List<Song> GetSongsByID(List<PlaylistSong> playlistSongs)
+    {
+        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
+        return _context.Songs.Where(song => songIds.Contains(song.TrackId)).ToList();
     }
 
     /// <summary>

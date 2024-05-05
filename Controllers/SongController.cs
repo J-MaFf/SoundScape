@@ -42,9 +42,4 @@ public class SongController
     {
         return songs.Where(song => song.Genre.ToLower() == genre.ToLower()).ToList();
     }
-    public List<Song> GetSongsByID(List<PlaylistSong> playlistSongs)
-    {
-        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
-        return _context.Songs.Where(song => songIds.Contains(song.TrackId)).ToList();
-    }
 }
