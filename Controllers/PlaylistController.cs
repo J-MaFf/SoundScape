@@ -1,4 +1,5 @@
 using COMPSCI366.Models;
+namespace SoundScape.Controllers;
 
 public class PlaylistController
 {
@@ -12,100 +13,33 @@ public class PlaylistController
         _context = new CompsciprojectContext();
     }
 
-    /// <summary>
-    /// Retrieves a list of playlists owned by the specified user.
-    /// </summary>
-    /// <param name="username">The username of the user.</param>
-    /// <returns>A list of playlists owned by the user.
-    /// If return value is an empty list, then no playlists owned by the user were found.</returns>
-    public List<Playlist> GetPlaylistsByUser(string username)
+    public List<Playlist> SearchString(string keyword)
     {
-        Console.WriteLine($"Searching for playlists by {username}:\n");
-        var playlists = _context.Playlists
-            .Where(p => p.Username == username)
-            .ToList();
-
-        playlists.ForEach(p => Console.WriteLine(p.PlaylistName));
-        Console.WriteLine($"There are {playlists.Count} playlists by {username}\n");
-
-        return playlists;
-    }
-
-    /// <summary>
-    /// Retrieves a list of playlists with the specified name.
-    /// </summary>
-    /// <param name="playlistName">The name of the playlist.</param>
-    /// <returns>A list of playlists with the specified name. If return value
-    /// is an empty list, then no playlists with the specified name were found.</returns>
-    public List<Playlist> GetPlaylistsByName(string playlistName)
-    {
-        Console.WriteLine($"Searching for playlists named {playlistName}:\n");
-        var playlists = _context.Playlists
-            .Where(p => p.PlaylistName == playlistName)
-            .ToList();
-
-        playlists.ForEach(p => Console.WriteLine(p.PlaylistName));
-        Console.WriteLine($"There are {playlists.Count} playlists named {playlistName}\n");
-
-        return playlists;
-    }
-    /// <summary>
-    /// Retrieves a playlist with the specified name and user.
-    /// </summary>
-    /// <param name="playlistName"></param>
-    /// <param name="username"></param>
-    /// <returns>The playlist with the specified name and user. If return value is null,
-    /// then no playlist with the specified name and user was found.</returns>
-    public Playlist? GetPlaylistByNameAndUser(string playlistName, string username)
-    {
-        Console.WriteLine($"Searching for playlist named {playlistName} by user {username}:\n");
-        var playlist = _context.Playlists
-            .Where(p => p.PlaylistName == playlistName && p.Username == username)
-            .FirstOrDefault();
-
-        if (playlist == null)
+        if (string.IsNullOrWhiteSpace(keyword))
         {
-            Console.WriteLine($"Playlist named {playlistName} by user {username} not found\n");
-            return null;
+            return _context.Playlists.ToList();
         }
-
-        Console.WriteLine($"Playlist named {playlistName} by user {username} found\n");
-        return playlist;
+        var lowerKeyword = keyword.ToLower(); // Case insensitive search
+        
+        var playlistSongs = _context.PlaylistSongs.ToList();
+        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
+        var songs = _context.Songs.Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
+    
+        return [.. _context.Playlists.Where(playlist =>
+            playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
+            playlist.Description != null && playlist.Description.ToLower().Contains(lowerKeyword) ||
+            playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
+            songs.Any(song => song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword))
+        )];
     }
-
-    /// <summary>
-    /// Retrieves a list of songs in the specified playlist.
-    /// </summary>
-    /// <param name="playlistId"></param>
-    /// <returns>A list of songs in the playlist. If return value is an empty list,
-    /// then no songs were found in the playlist.</returns>
-    public List<PlaylistSong> GetPlaylistSongs(string playlistId)
+    public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
-        var playlist = _context.Playlists.Find(playlistId);
-        if (playlist == null)
-        {
-            Console.WriteLine($"Playlist {playlistId} not found\n");
-            return [];
-        }
-        Console.WriteLine($"Listing songs in playlist {playlist.PlaylistName}:\n");
-        var playlistSongs = _context.PlaylistSongs
-            .Where(ps => ps.PlaylistId == playlistId)
-            .ToList();
-
-        // Print the songs in the playlist
-        playlistSongs.ForEach(ps =>
-        {
-            var song = _context.Songs.Find(ps.TrackId);
-            if (song == null)
-            {
-                Console.WriteLine($"Song with ID {ps.TrackId} not found\n");
-                return;
-            }
-            Console.WriteLine($"{song.Trackname} - {song.Artists}\tOrder: {ps.Order}");
-        });
-        Console.WriteLine($"There are {playlistSongs.Count} songs in playlist {playlist.PlaylistName}\n");
-
-        return playlistSongs;
+        return _context.Playlists.OrderByDescending(playlist => playlist.CreationDate).ToList();
+    }
+    public List<Song> GetSongsByID(List<PlaylistSong> playlistSongs)
+    {
+        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
+        return _context.Songs.Where(song => songIds.Contains(song.TrackId)).ToList();
     }
 
     /// <summary>
@@ -278,6 +212,18 @@ public class PlaylistController
         playlistSongs.ForEach(ps => ps.Order--);
         _context.SaveChanges();
         Console.WriteLine($"Song {song.Trackname} removed from playlist {playlist.PlaylistName}\n");
+        return true;
+    }
+
+    public bool EraseAllPlaylistsAndPlaylistSongs()
+    {
+        Console.WriteLine("Erasing all playlists and playlist songs:\n");
+
+        _context.Playlists.RemoveRange(_context.Playlists);
+        _context.PlaylistSongs.RemoveRange(_context.PlaylistSongs);
+        _context.SaveChanges();
+
+        Console.WriteLine("All playlists and playlist songs erased\n");
         return true;
     }
 }

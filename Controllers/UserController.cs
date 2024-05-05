@@ -1,5 +1,5 @@
 using COMPSCI366.Models;
-
+namespace SoundScape.Controllers;
 /// <summary>
 /// Represents a controller for managing user-related operations.
 /// </summary>
@@ -14,21 +14,23 @@ public class UserController
     {
         _context = new CompsciprojectContext();
     }
-
-    /// <summary>
-    /// Retrieves all users from the database.
-    /// </summary>
-    /// <returns>A list of all users.</returns>
-    public List<User> GetAllUsers()
+    public List<User> SearchString(string keyword)
     {
-        Console.WriteLine("Searching for all users:\n");
-        var users = _context.Users.ToList();
+        if(string.IsNullOrWhiteSpace(keyword))
+        {
+            return [.. _context.Users]; // Used collection expression (for compiler warning)
+        }
+        var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
+        return [.. _context.Users.Where(user =>
+            user.Username != null && user.Username.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase) ||
+            user.Playlists != null && user.Playlists.Any(playlist =>
+                playlist.PlaylistName != null && playlist.PlaylistName.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase))
+        )];
+    }
 
-        users.ForEach(x => Console.WriteLine(x.Username));
-
-        Console.WriteLine($"There are {users.Count} users\n");
-
-        return users;
+    public static List<User> SortByMinutes(List<User> users)
+    {
+        return [.. users.OrderByDescending(user => user.MinutesListened)];
     }
 
     /// <summary>

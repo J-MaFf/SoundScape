@@ -1,4 +1,5 @@
 using COMPSCI366.Models;
+namespace SoundScape.Controllers;
 
 /// <summary>
 /// Represents a controller for managing songs.
@@ -15,79 +16,36 @@ public class SongController
         _context = new CompsciprojectContext();
     }
 
-    /// <summary>
-    /// Gets a list of songs by the specified artist.
-    /// </summary>
-    /// <param name="artist">The artist name.</param>
-    /// <returns>A list of songs by the specified artist.</returns>
-    public List<Song> GetSongsByArtist(string artist)
+    public List<Song> SearchString(string keyword)
     {
-        Console.WriteLine($"Searching for songs by {artist}:\n");
-        var songs = _context.Songs
-            .Where(s => s.Artists == artist)
-            .ToList();
-
-        songs.ForEach(s => Console.WriteLine(s.Trackname));
-
-        Console.WriteLine($"There were {songs.Count} songs found by {artist}\n");
-
-        return songs;
+        if (string.IsNullOrWhiteSpace(keyword))
+        {
+            return [.. _context.Songs]; // Return all songs as List if keyword is empty
+        }
+        var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return [.. _context.Songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
+                                (s.Artists != null && s.Artists.ToLower().Contains(lowerKeyword)) ||
+                                (s.Album != null && s.Album.Name.ToLower().Contains(lowerKeyword)))];
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
-
-    /// <summary>
-    /// Gets a list of songs in the specified album.
-    /// </summary>
-    /// <param name="album">The album name.</param>
-    /// <returns>A list of songs in the specified album.
-    /// If the list is empty, the album was not found or it was empty.</returns>
-    public List<Song> GetSongsByAlbum(string album)
+    public static List<Song> SortByDuration(List<Song> songs)
     {
-        Console.WriteLine($"Searching for songs in album {album}:\n");
-        var songs = _context.Songs
-            .Where(s => s.Albumname == album)
-            .ToList();
-
-        songs.ForEach(s => Console.WriteLine(s.Trackname));
-        Console.WriteLine($"There are {songs.Count} songs in {album}\n");
-
-        return songs;
+        
+        return songs.OrderByDescending(song => song.Duration).ToList();
     }
-
-    /// <summary>
-    /// Gets a list of songs with the specified name.
-    /// </summary>
-    /// <param name="name">The song name.</param>
-    /// <returns>A list of songs with the specified name.
-    /// If the list is empty, the song was not found.</returns>
-    public List<Song> GetSongsByName(string name)
+    public static List<Song> SortByDanceability(List<Song> songs)
     {
-        Console.WriteLine($"Searching for Songs named {name}\n");
-        var songs = _context.Songs
-            .Where(s => s.Trackname == name)
-            .ToList();
-
-        songs.ForEach(s => Console.WriteLine(s.Trackname));
-        Console.WriteLine($"There are {songs.Count} songs named {name}\n");
-
-        return songs;
+        return songs.OrderByDescending(song => song.Danceability).ToList();
     }
-
-    /// <summary>
-    /// Gets a list of songs with the specified danceability rating.
-    /// </summary>
-    /// <param name="danceability">The danceability rating.</param>
-    /// <returns>A list of songs with the specified danceability rating.
-    /// If the list is empty, no songs were found with the specified danceability rating.</returns>
-    public List<Song> GetSongsByDanceability(double danceability)
+    public static List<Song> FilterByProfanity(List<Song> songs)
     {
-        Console.WriteLine($"Searching for songs with danceability rating of {danceability}\n");
-        var songs = _context.Songs
-            .Where(s => s.Danceability == danceability)
-            .ToList();
-
-        songs.ForEach(s => Console.WriteLine(s.Trackname));
-
-        Console.WriteLine($"There are {songs.Count} songs with danceability rating of {danceability}\n");
-        return songs;
+        return songs.Where(song => song.Profanity == false).ToList();
+    }
+    public static List<Song> FilterByGenre(List<Song> songs, string genre)
+    {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        return songs.Where(song => song.Genre.Equals(genre, StringComparison.CurrentCultureIgnoreCase)).ToList();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 }

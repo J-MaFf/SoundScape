@@ -1,4 +1,5 @@
 using COMPSCI366.Models;
+namespace SoundScape.Controllers;
 
 public class AlbumController
 {
@@ -9,41 +10,27 @@ public class AlbumController
         _context = new CompsciprojectContext();
     }
 
-    public List<Album> ListAlbumsByName(string name)
+    public List<Album> SearchString(string keyword)
     {
-        Console.WriteLine($"Searching for albums named {name}:\n");
-        var albums = _context.Albums
-            .Where(a => a.Name == name)
-            .ToList();
-
-        albums.ForEach(a => Console.WriteLine(a.Name));
-
-        Console.WriteLine($"There were {albums.Count} album(s) found named {name}\n");
-
-        return albums;
+        if (string.IsNullOrWhiteSpace(keyword))
+        {
+            return [.. _context.Albums];
+        }
+        var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
+        return [.. _context.Albums.Where(album =>
+            (album.Name != null && album.Name.ToLower().Contains(lowerKeyword)) ||
+            (album.Songs != null && album.Songs.Any(song =>
+                (song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword)) ||
+                (song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword))
+            ))
+        )];
     }
-
-    // List albums by artist
-    public List<Album> ListAlbumsByArtist(string artist)
+    public static List<Album> SortByDuration(List<Album> albums)
     {
-        Console.WriteLine($"Searching for albums by artist {artist}:\n");
-
-        var albums = _context.Albums
-            .Join(
-                _context.Songs, // The table to join with
-                album => album.AlbumId, // The key selector for the outer sequence
-                song => song.AlbumId, // The key selector for the inner sequence
-                (album, song) => new { Album = album, Song = song }
-            )
-            .Where(albumAndSong => albumAndSong.Song.Artists == artist)
-            .Select(albumAndSong => albumAndSong.Album)
-            .Distinct()
-            .ToList();
-
-        albums.ForEach(album => Console.WriteLine(album.Name));
-
-        Console.WriteLine($"There were {albums.Count} album(s) found by artist {artist}\n");
-
-        return albums;
+        return [.. albums.OrderByDescending(album => album.Duration)];
+    }
+    public static List<Album> SortByTotalSongs(List<Album> albums)
+    {
+        return [.. albums.OrderByDescending(album => album.Totalsongs)];
     }
 }
