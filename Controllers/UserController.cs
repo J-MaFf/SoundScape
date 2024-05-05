@@ -22,9 +22,9 @@ public class UserController
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
         return [.. _context.Users.Where(user =>
-            user.Username != null && user.Username.ToLower().Contains(lowerKeyword) ||
+            user.Username != null && user.Username.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase) ||
             user.Playlists != null && user.Playlists.Any(playlist =>
-                playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword))
+                playlist.PlaylistName != null && playlist.PlaylistName.Contains(lowerKeyword, StringComparison.CurrentCultureIgnoreCase))
         )];
     }
 

@@ -83,7 +83,7 @@ class Tests {
         userController.DeleteUser("joey");
         userController.DeleteUser("matthew");
 
-        // Print results
+       //Print results
         // Console.WriteLine("User joey: ");
         // Console.WriteLine(user.Username);
         // Console.WriteLine("\n\n");
@@ -106,6 +106,11 @@ class Tests {
     public static bool TestPlaylistController()
     {
         PlaylistController playlistController = new();
+
+        // Test all methods for playlistController
+
+        var coolPlaylist = playlistController.CreatePlaylist("Joey", "Cool playlist", "The absolute best playlist, definitively");
+        var playlists = playlistController.SearchString("Cool playlist"); 
 
         return true;
 
