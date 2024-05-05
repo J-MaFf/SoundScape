@@ -12,100 +12,27 @@ public class PlaylistController
         _context = new CompsciprojectContext();
     }
 
-    /// <summary>
-    /// Retrieves a list of playlists owned by the specified user.
-    /// </summary>
-    /// <param name="username">The username of the user.</param>
-    /// <returns>A list of playlists owned by the user.
-    /// If return value is an empty list, then no playlists owned by the user were found.</returns>
-    public List<Playlist> GetPlaylistsByUser(string username)
+    public List<Playlist> SearchString(string keyword)
     {
-        Console.WriteLine($"Searching for playlists by {username}:\n");
-        var playlists = _context.Playlists
-            .Where(p => p.Username == username)
-            .ToList();
-
-        playlists.ForEach(p => Console.WriteLine(p.PlaylistName));
-        Console.WriteLine($"There are {playlists.Count} playlists by {username}\n");
-
-        return playlists;
-    }
-
-    /// <summary>
-    /// Retrieves a list of playlists with the specified name.
-    /// </summary>
-    /// <param name="playlistName">The name of the playlist.</param>
-    /// <returns>A list of playlists with the specified name. If return value
-    /// is an empty list, then no playlists with the specified name were found.</returns>
-    public List<Playlist> GetPlaylistsByName(string playlistName)
-    {
-        Console.WriteLine($"Searching for playlists named {playlistName}:\n");
-        var playlists = _context.Playlists
-            .Where(p => p.PlaylistName == playlistName)
-            .ToList();
-
-        playlists.ForEach(p => Console.WriteLine(p.PlaylistName));
-        Console.WriteLine($"There are {playlists.Count} playlists named {playlistName}\n");
-
-        return playlists;
-    }
-    /// <summary>
-    /// Retrieves a playlist with the specified name and user.
-    /// </summary>
-    /// <param name="playlistName"></param>
-    /// <param name="username"></param>
-    /// <returns>The playlist with the specified name and user. If return value is null,
-    /// then no playlist with the specified name and user was found.</returns>
-    public Playlist? GetPlaylistByNameAndUser(string playlistName, string username)
-    {
-        Console.WriteLine($"Searching for playlist named {playlistName} by user {username}:\n");
-        var playlist = _context.Playlists
-            .Where(p => p.PlaylistName == playlistName && p.Username == username)
-            .FirstOrDefault();
-
-        if (playlist == null)
+        if (string.IsNullOrWhiteSpace(keyword))
         {
-            Console.WriteLine($"Playlist named {playlistName} by user {username} not found\n");
-            return null;
+            return _context.Playlists.ToList();
         }
-
-        Console.WriteLine($"Playlist named {playlistName} by user {username} found\n");
-        return playlist;
+        var lowerKeyword = keyword.ToLower(); // Case insensitive search
+        SongController songController = new SongController();
+        return _context.Playlists.Where(playlist =>
+            playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
+            playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
+            playlist.PlaylistSongs != null && songController.GetSongsByID(playlist.PlaylistSongs.ToList()).Any(song =>
+                song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword) ||
+                song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword) ||
+                song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword)
+            )
+        ).ToList();
     }
-
-    /// <summary>
-    /// Retrieves a list of songs in the specified playlist.
-    /// </summary>
-    /// <param name="playlistId"></param>
-    /// <returns>A list of songs in the playlist. If return value is an empty list,
-    /// then no songs were found in the playlist.</returns>
-    public List<PlaylistSong> GetPlaylistSongs(string playlistId)
+    public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
-        var playlist = _context.Playlists.Find(playlistId);
-        if (playlist == null)
-        {
-            Console.WriteLine($"Playlist {playlistId} not found\n");
-            return [];
-        }
-        Console.WriteLine($"Listing songs in playlist {playlist.PlaylistName}:\n");
-        var playlistSongs = _context.PlaylistSongs
-            .Where(ps => ps.PlaylistId == playlistId)
-            .ToList();
-
-        // Print the songs in the playlist
-        playlistSongs.ForEach(ps =>
-        {
-            var song = _context.Songs.Find(ps.TrackId);
-            if (song == null)
-            {
-                Console.WriteLine($"Song with ID {ps.TrackId} not found\n");
-                return;
-            }
-            Console.WriteLine($"{song.Trackname} - {song.Artists}\tOrder: {ps.Order}");
-        });
-        Console.WriteLine($"There are {playlistSongs.Count} songs in playlist {playlist.PlaylistName}\n");
-
-        return playlistSongs;
+        return _context.Playlists.OrderByDescending(playlist => playlist.CreationDate).ToList();
     }
 
     /// <summary>

@@ -40,10 +40,7 @@ static partial class Program
     {
         SongController songController = new();
         // Test all methods for songController:
-        songController.GetSongsByArtist("red hot chili peppers");
-        songController.GetSongsByAlbum("back in black");
-        songController.GetSongsByName("Back in black");
-        songController.GetSongsByDanceability(.466);
+        
     }
 
     public static void TestAlbumController()
@@ -51,8 +48,7 @@ static partial class Program
         AlbumController albumController = new();
 
         // Test all methods for albumController
-        albumController.ListAlbumsByName("2014 Forest Hills Drive");
-        albumController.ListAlbumsByArtist("J. Cole");
+        
 
     }
 
@@ -61,57 +57,15 @@ static partial class Program
         UserController userController = new();
 
         // Test all methods for userController
-        userController.GetAllUsers();
+        userController.SearchString(""); // Equivalant to GetAllUsers() if string is empty
+
         userController.CreateNewUser("joey", "1234");
         userController.GetUser("joey");
         userController.DeleteUser("joey");
     }
 
-    public static bool TestPlaylistController()
+    public static void TestPlaylistController()
     {
-        PlaylistController playlistController = new();
-        SongController songController = new();
-        UserController userController = new();
-
-        //var playlist = playlistController.GetPlaylistsByUser("joey")[0];
-        //playlistController.DeletePlaylist(playlist.PlaylistId);
-
-        //userController.CreateNewUser("joey", "1234");
-
-        // Test all methods for playlistController
-        playlistController.GetPlaylistsByUser("joey");
-
-        // Create a new playlist
-        var myPlaylist = playlistController.CreatePlaylist("joey", "My Playlist", "This is my playlist");
-
-        if (myPlaylist == null)
-        {
-            Console.WriteLine("Playlist was not created");
-            return false;
-        }
-        Console.WriteLine("Playlist was created and retrieved successfully");
-        // Get a song and add it to the playlist
-        var song = songController.GetSongsByName("Back in black")[0]; // Get the first song in the list
-        playlistController.AddSongToPlaylist(myPlaylist.PlaylistId, song.TrackId);
-        var anotherSong = songController.GetSongsByName("Californication")[0];
-        playlistController.AddSongToPlaylist(myPlaylist.PlaylistId, anotherSong.TrackId);
-
-        // View the songs in the playlist
-        var playlistSongs = playlistController.GetPlaylistSongs(myPlaylist.PlaylistId);
-
-        // Remove a song from the playlist
-        playlistController.RemoveSongFromPlaylist(myPlaylist.PlaylistId, song.TrackId);
-
-        // View the songs in the playlist
-        playlistSongs = playlistController.GetPlaylistSongs(myPlaylist.PlaylistId);
-
-        // Delete the playlist (will also delete the playlist songs)
-        playlistController.DeletePlaylist(myPlaylist.PlaylistId);
-
-        return true;
-
-
-
-
+        
     }
 }
