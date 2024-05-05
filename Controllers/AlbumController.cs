@@ -14,7 +14,7 @@ public class AlbumController
     {
         if (string.IsNullOrWhiteSpace(keyword))
         {
-            return _context.Albums.ToList();
+            return [.. _context.Albums];
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
         return [.. _context.Albums.Where(album =>
@@ -27,10 +27,10 @@ public class AlbumController
     }
     public static List<Album> SortByDuration(List<Album> albums)
     {
-        return albums.OrderByDescending(album => album.Duration).ToList();
+        return [.. albums.OrderByDescending(album => album.Duration)];
     }
     public static List<Album> SortByTotalSongs(List<Album> albums)
     {
-        return albums.OrderByDescending(album => album.Totalsongs).ToList();
+        return [.. albums.OrderByDescending(album => album.Totalsongs)];
     }
 }
