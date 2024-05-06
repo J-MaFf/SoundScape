@@ -1,5 +1,6 @@
 using COMPSCI366.Models;
 using Microsoft.VisualBasic.Devices;
+using System.Security.Cryptography;
 
 /// <summary>
 /// Represents a controller for managing user-related operations.
@@ -41,17 +42,14 @@ public class UserController
     /// <returns>The user with the specified username, or null if not found.</returns>
     public User? GetUser(string username)
     {
-        Console.WriteLine($"Searching for user {username}\n");
 
         var user = _context.Users
             .FirstOrDefault(x => x.Username == username);
 
         if (user == null)
         {
-            Console.WriteLine($"{username} is not a user\n");
             return null;
         }
-        Console.WriteLine($"{username} found.\n");
         return user;
     }
 
@@ -63,19 +61,19 @@ public class UserController
     /// <returns>The newly created user, or null if the username already exists.</returns>
     public User? CreateNewUser(string username, string password)
     {
-        Console.WriteLine($"Creating new user {username}\n");
 
         // Check to see if username already exists in the database
         if (_context.Users.Any(x => x.Username == username))
         {
-            Console.WriteLine($"{username} is already a user\n");
             return null;
         }
 
         User newUser = new();
         newUser.Username = username;
         newUser.Password = password;
-        newUser.MinutesListened = 0;
+        Random rnd = new Random();
+        int num = rnd.Next(0,15000);
+        newUser.MinutesListened = num;
 
         // Add user to database
         _context.Users.Add(newUser);
@@ -92,21 +90,18 @@ public class UserController
     /// <returns>True if the user was successfully deleted, false otherwise.</returns>
     public bool DeleteUser(string username)
     {
-        Console.WriteLine($"Attempting to delete {username}\n");
 
         var userToDelete = _context.Users
             .FirstOrDefault(x => x.Username == username);
 
         if (userToDelete == null)
         {
-            Console.WriteLine($"Cannot delete {username} because that user does not exist\n");
             return false;
         }
 
         _context.Users.Remove(userToDelete);
         _context.SaveChanges();
 
-        Console.WriteLine($"User {username} deleted");
         return true;
     }
 }

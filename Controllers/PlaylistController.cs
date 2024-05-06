@@ -1,4 +1,5 @@
 using COMPSCI366.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 public class PlaylistController
 {
@@ -19,14 +20,16 @@ public class PlaylistController
             return _context.Playlists.ToList();
         }
         var lowerKeyword = keyword.ToLower(); // Case insensitive search
+
+        var playlistSongs = _context.PlaylistSongs.ToList();
+        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
+        var songs = _context.Songs.Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
+
         return _context.Playlists.Where(playlist =>
             playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
+            playlist.Description != null && playlist.Description.ToLower().Contains(lowerKeyword) ||
             playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
-            playlist.PlaylistSongs != null && GetSongsByID(playlist.PlaylistSongs.ToList()).Any(song =>
-                song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword) ||
-                song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword) ||
-                song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword)
-            )
+            songs.Any(song => song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword))
         ).ToList();
     }
     public List<Playlist> SortByCreationDate(List<Playlist> playlists)
@@ -39,6 +42,11 @@ public class PlaylistController
         return _context.Songs.Where(song => songIds.Contains(song.TrackId)).ToList();
     }
 
+    public Playlist? GetPlaylist(string username, string playlistName)
+    {
+        return _context.Playlists.FirstOrDefault(playlist => playlist.Username == username && playlist.PlaylistName == playlistName);
+    }
+
     /// <summary>
     /// Creates a new playlist for the specified user.
     /// </summary>
@@ -48,20 +56,16 @@ public class PlaylistController
     /// <returns>The created playlist. If return value is null, the method failed.</returns>
     public Playlist? CreatePlaylist(string username, string playlistName, string description)
     {
-        Console.WriteLine($"Creating playlist {playlistName} for user {username}:\n");
-
         // Check if the user exists
         var user = _context.Users.Find(username);
         if (user == null)
         {
-            Console.WriteLine($"User {username} not found\n");
             return null;
         }
 
         // Check if the playlist already exists
         if (_context.Playlists.Any(p => p.Username == username && p.PlaylistName == playlistName))
         {
-            Console.WriteLine($"Playlist {playlistName} already exists for user {username}\n");
             return null;
         }
 
@@ -75,8 +79,6 @@ public class PlaylistController
 
         _context.Playlists.Add(playlist);
         _context.SaveChanges();
-
-        Console.WriteLine($"Playlist {playlistName} created for user {username}\n");
 
         return playlist;
     }
@@ -92,10 +94,8 @@ public class PlaylistController
 
         if (playlist == null)
         {
-            Console.WriteLine($"Playlist {playlistId} not found\n");
             return false;
         }
-        Console.WriteLine($"Deleting playlist {playlist.PlaylistName}:\n");
 
         // Remove all songs from the playlist
         var playlistSongs = _context.PlaylistSongs
@@ -109,14 +109,12 @@ public class PlaylistController
         // Verify that all songs were removed
         if (_context.PlaylistSongs.Any(ps => ps.PlaylistId == playlistId))
         {
-            Console.WriteLine($"Failed to remove all songs from playlist {playlist.PlaylistName} with ID {playlistId}\n");
             return false;
         }
 
         _context.Playlists.Remove(playlist);
         _context.SaveChanges();
 
-        Console.WriteLine($"Playlist named {playlist.PlaylistName} with Id {playlistId} deleted\n");
         return true;
     }
 
@@ -132,7 +130,6 @@ public class PlaylistController
         var playlist = _context.Playlists.Find(playlistId);
         if (playlist == null)
         {
-            Console.WriteLine($"Playlist {playlistId} not found\n");
             return null;
         }
 
@@ -140,11 +137,9 @@ public class PlaylistController
         var track = _context.Songs.Find(trackId);
         if (track == null)
         {
-            Console.WriteLine($"Track {trackId} not found\n");
             return null;
         }
 
-        Console.WriteLine($"Adding song named {track.Trackname} with TrackId {trackId} to playlist named {playlist.PlaylistName} with PlaylistId {playlistId}:\n");
 
         // Calculate the order for the new song
         int order = 1;
@@ -165,8 +160,6 @@ public class PlaylistController
         _context.PlaylistSongs.Add(playlistSong);
         _context.SaveChanges();
 
-        Console.WriteLine($"Song named {track.Trackname} added to playlist named {playlist.PlaylistName}\n");
-
         return playlistSong;
     }
 
@@ -183,19 +176,15 @@ public class PlaylistController
 
         if (playlist == null || song == null)
         {
-            Console.WriteLine($"Playlist with ID {playlistId} or song with ID {trackId} not found\n");
             return false;
         }
-
-        Console.WriteLine($"Removing song {song.Trackname} from playlist {playlist.PlaylistName}:\n");
 
         var playlistSong = _context.PlaylistSongs
             .Where(ps => ps.PlaylistId == playlistId && ps.TrackId == trackId)
             .FirstOrDefault();
 
         if (playlistSong == null)
-        {
-            Console.WriteLine($"Song {trackId} not found in playlist {playlist.PlaylistName}\n");
+        {;
             return false;
         }
 
@@ -208,7 +197,18 @@ public class PlaylistController
 
         playlistSongs.ForEach(ps => ps.Order--);
         _context.SaveChanges();
-        Console.WriteLine($"Song {song.Trackname} removed from playlist {playlist.PlaylistName}\n");
+        return true;
+    }
+
+    public bool EraseAllPlaylistsAndPlaylistSongs()
+    {
+        Console.WriteLine("Erasing all playlists and playlist songs:\n");
+
+        _context.Playlists.RemoveRange(_context.Playlists);
+        _context.PlaylistSongs.RemoveRange(_context.PlaylistSongs);
+        _context.SaveChanges();
+
+        Console.WriteLine("All playlists and playlist songs erased\n");
         return true;
     }
 }

@@ -22,9 +22,10 @@ public class SongController
             return _context.Songs.ToList();
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
-        return _context.Songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
+        var filteredSongs = _context.Songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
                                 (s.Artists != null && s.Artists.ToLower().Contains(lowerKeyword)) ||
                                 (s.Album != null && s.Album.Name.ToLower().Contains(lowerKeyword))).ToList();
+        return filteredSongs.Distinct(new SongComparer()).ToList();
     }
     public List<Song> SortByDuration(List<Song> songs)
     {
@@ -34,12 +35,12 @@ public class SongController
     {
         return songs.OrderByDescending(song => song.Danceability).ToList();
     }
+    public List<Song> SortByGenre(List<Song> songs)
+    {
+        return songs.OrderBy(song => song.Genre).ToList();
+    }
     public List<Song> FilterByProfanity(List<Song> songs)
     {
         return songs.Where(song => song.Profanity == false).ToList();
-    }
-    public List<Song> FilterByGenre(List<Song> songs, string genre)
-    {
-        return songs.Where(song => song.Genre.ToLower() == genre.ToLower()).ToList();
     }
 }

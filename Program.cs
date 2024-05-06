@@ -1,4 +1,6 @@
 namespace SoundScape;
+
+using COMPSCI366.Models;
 using System.Threading;
 
 static partial class Program
@@ -9,18 +11,27 @@ static partial class Program
     /// <summary>
     ///  The main entry point for the application.
     /// </summary>
-    // [STAThread]
+    [STAThread]
     static void Main()
     {
         AllocConsole();
         // // To customize application configuration such as set high DPI settings or default font,
         // // see https://aka.ms/applicationconfiguration.
-        // ApplicationConfiguration.Initialize();
-        // Application.Run(new Form1());
 
-        // Wait for user to end program
-        Console.Write("Press enter key to exit. ");
-        Console.Read();
+        //AlbumController aC  = new AlbumController();
+        //var albums = aC.SearchString("");
+        //foreach( var album in albums )
+        //{
+        //    foreach (var song in album.Songs )
+        //    {
+        //        Console.WriteLine(song.Trackname);
+        //    }
+        //}
+
+        PlaylistController pC = new PlaylistController();
+        //pC.EraseAllPlaylistsAndPlaylistSongs();
+
+        ApplicationConfiguration.Initialize();
+        Application.Run(new Form1());
     }
-
 }
