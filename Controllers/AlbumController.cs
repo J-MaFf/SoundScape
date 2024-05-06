@@ -26,13 +26,14 @@ public class AlbumController : Controller
                  song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword)))
         )
         .ToList();
+
     }
-    public List<Album> SortByDuration(List<Album> albums)
+    public static List<Album> SortByDuration(List<Album> albums)
     {
-        return albums.OrderByDescending(album => album.Duration).ToList();
+        return [.. albums.OrderByDescending(album => album.Duration)];
     }
-    public List<Album> SortByTotalSongs(List<Album> albums)
+    public static List<Album> SortByTotalSongs(List<Album> albums)
     {
-        return albums.OrderByDescending(album => album.Totalsongs).ToList();
+        return [.. albums.OrderByDescending(album => album.Totalsongs)];
     }
 }

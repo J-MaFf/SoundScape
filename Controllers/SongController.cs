@@ -1,4 +1,5 @@
 using COMPSCI366.Models;
+namespace SoundScape.Controllers;
 
 /// <summary>
 /// Represents a controller for managing songs.
@@ -23,16 +24,18 @@ public class SongController : Controller
                                 (s.Artists != null && s.Artists.ToLower().Contains(lowerKeyword)) ||
                                 (s.Album != null && s.Album.Name.ToLower().Contains(lowerKeyword))).ToList();
         return filteredSongs.Distinct(new SongComparer()).ToList();
+
     }
-    public List<Song> SortByDuration(List<Song> songs)
+    public static List<Song> SortByDuration(List<Song> songs)
     {
+        
         return songs.OrderByDescending(song => song.Duration).ToList();
     }
-    public List<Song> SortByDanceability(List<Song> songs)
+    public static List<Song> SortByDanceability(List<Song> songs)
     {
         return songs.OrderByDescending(song => song.Danceability).ToList();
     }
-    public List<Song> SortByGenre(List<Song> songs)
+    public static List<Song> FilterByProfanity(List<Song> songs)
     {
         return songs.OrderBy(song => song.Genre).ToList();
     }

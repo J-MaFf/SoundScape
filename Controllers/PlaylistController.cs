@@ -2,6 +2,7 @@ using COMPSCI366.Models;
 using Microsoft.VisualBasic.Devices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
+
 public class PlaylistController : Controller
 {
     /// <summary>
@@ -35,6 +36,7 @@ public class PlaylistController : Controller
         )
     )
     .ToList();
+
     }
     public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
@@ -188,6 +190,18 @@ public class PlaylistController : Controller
 
         playlistSongs.ForEach(ps => ps.Order--);
         _context.SaveChanges();
+        return true;
+    }
+
+    public bool EraseAllPlaylistsAndPlaylistSongs()
+    {
+        Console.WriteLine("Erasing all playlists and playlist songs:\n");
+
+        _context.Playlists.RemoveRange(_context.Playlists);
+        _context.PlaylistSongs.RemoveRange(_context.PlaylistSongs);
+        _context.SaveChanges();
+
+        Console.WriteLine("All playlists and playlist songs erased\n");
         return true;
     }
 
