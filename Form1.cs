@@ -1,10 +1,14 @@
 ﻿using COMPSCI366.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.ExceptionServices;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -12,11 +16,16 @@ namespace SoundScape;
 
 public partial class Form1 : Form
 {
-    static string? username = null;
-    static string? password = null;
+    string? username = null;
+    string? password = null;
     bool modifyPL = false;
     int row = -1;
     string page = "";
+    PlaylistController pC = new();
+    UserController uC = new();
+    SongController sC = new();
+    AlbumController  aC = new();
+    ConcurrentDictionary<string, string> albumArtist = new();
     public Form1()
     {
 
@@ -37,6 +46,16 @@ public partial class Form1 : Form
         button7.Visible = false;
         button8.Visible = false;
         textBox3.Visible = false;
+
+        var albums = Controller._albums;
+        var songs = Controller._songs;
+
+        Parallel.ForEach(albums, (album) =>
+        {
+            var song = songs.FirstOrDefault(song => song.AlbumId == album.AlbumId);
+            var artist = song?.Artists ?? "No Artist";
+            albumArtist.TryAdd(album.AlbumId, artist);
+        });
 
     }
 
@@ -144,8 +163,6 @@ public partial class Form1 : Form
             dt.Columns.Add("Add", typeof(string));
             dt.Columns.Add("Remove", typeof(string));
 
-
-            SongController sC = new SongController();
             var songs = sC.SearchString(searchTerm);
             progressBar1.Value += 25;
 
@@ -176,7 +193,6 @@ public partial class Form1 : Form
             dt.Columns.Add("Total Songs", typeof(int));
             dt.Columns.Add("Duration", typeof(string));
 
-            AlbumController aC = new();
             var albums = aC.SearchString(searchTerm);
             progressBar1.Value += 33;
 
@@ -187,16 +203,11 @@ public partial class Form1 : Form
 
             progressBar1.Value += 33;
 
+            var songs = Controller._songs;
+
             foreach (var album in albums)
-            {
-                List<string> artists = [];
-                foreach (var song in album.Songs)
-                {
-                    Console.WriteLine("song");
-                    artists.Add(song.Artists);
-                }
-                string artistsStr = string.Join(", ", artists.Distinct().ToList());
-                dt.Rows.Add([$"{album.Name}", $"{artistsStr}", $"{album.Totalsongs}", $"{TimeSpan.FromMilliseconds((double)album.Duration).ToString(@"hh\:mm\:ss")}"]);
+            { 
+                dt.Rows.Add([$"{album.Name}", albumArtist[album.AlbumId], $"{album.Totalsongs}", $"{TimeSpan.FromMilliseconds((double)album.Duration).ToString(@"hh\:mm\:ss")}"]);
             }
             progressBar1.Value += 34;
             dataGridView1.DataSource = dt;
@@ -212,8 +223,8 @@ public partial class Form1 : Form
             dt.Columns.Add("Created By", typeof(string));
             dt.Columns.Add("Playlist ID", typeof(string));
             dt.Columns.Add("Delete", typeof(string));
+            dt.Columns.Add("View", typeof(string));
 
-            PlaylistController pC = new();
             var playlists = pC.SearchString(searchTerm);
             progressBar1.Value += 33;
             if (sortBy.SelectedItem == "Creation Date")
@@ -222,7 +233,7 @@ public partial class Form1 : Form
 
             foreach (var playlist in playlists)
             {
-                dt.Rows.Add([$"{playlist.PlaylistName}", $"{playlist.Description}", playlist.PlaylistSongs.Count, playlist.CreationDate, playlist.Username, playlist.PlaylistId, "❌"]);
+                dt.Rows.Add([$"{playlist.PlaylistName}", $"{playlist.Description}", playlist.PlaylistSongs.Count, playlist.CreationDate, playlist.Username, playlist.PlaylistId, "❌", "👁️"]);
             }
             progressBar1.Value += 34;
             dataGridView1.DataSource = dt;
@@ -236,7 +247,6 @@ public partial class Form1 : Form
             dt.Columns.Add("Time Listened", typeof(string));
             dt.Columns.Add("Playlists", typeof(int));
 
-            UserController uC = new();
             var users = uC.SearchString(searchTerm);
             progressBar1.Value += 33;
 
@@ -308,7 +318,6 @@ public partial class Form1 : Form
             label10.ForeColor = Color.Red;
             return;
         }
-        UserController uC = new();
         var user = uC.GetUser(textBox1.Text);
         if (user == null)
         {
@@ -348,7 +357,6 @@ public partial class Form1 : Form
             label10.ForeColor = Color.Red;
             return;
         }
-        UserController uC = new();
         var user = uC.GetUser(textBox1.Text);
         if (user != null)
         {
@@ -405,7 +413,6 @@ public partial class Form1 : Form
 
     private void button7_Click(object sender, EventArgs e)
     {
-        UserController uC = new();
         uC.DeleteUser(username);
 
         username = password = null;
@@ -419,25 +426,39 @@ public partial class Form1 : Form
     // Click add/remove
     private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
     {
+        // Add to playlist
         textBox3.ForeColor = Color.Black;
         if (e.ColumnIndex == 8)
         {
+            var screenPosition = Cursor.Position;
+            var clientPosition = PointToClient(screenPosition);
+            textBox3.Location = new Point(clientPosition.X + 10, clientPosition.Y);
+            if (textBox3.Width + textBox3.Location.X > 1080)
+                textBox3.Location = new Point(clientPosition.X - (textBox3.Width + textBox3.Location.X - 1080), clientPosition.Y);
+
             textBox3.Visible = true;
-            textBox3.Location = new Point(1080 / 2, 720 / 2);
             textBox3.Text = "Add to playlist";
             modifyPL = true;
             row = e.RowIndex;
         }
+        // Remove from playlist
         else if (e.ColumnIndex == 9)
         {
-            Console.WriteLine("remove");
+            var screenPosition = Cursor.Position;
+            var clientPosition = PointToClient(screenPosition);
+            textBox3.Location = new Point(clientPosition.X + 10, clientPosition.Y);
+            if (textBox3.Width + textBox3.Location.X > 1080)
+                textBox3.Location = new Point(clientPosition.X- (textBox3.Width + textBox3.Location.X - 1080), clientPosition.Y);
+
+
+            textBox3.Visible = true;
             textBox3.Text = "Remove from playlist";
             modifyPL = false;
             row = e.RowIndex;
         }
+        // Delete playlist
         else if (e.ColumnIndex == 6 && page == "Playlist")
         {
-            PlaylistController pC = new();
             var pl = pC.GetPlaylist(username, (string)dataGridView1[0, e.RowIndex].Value);
             if (pl != null)
             {
@@ -445,6 +466,53 @@ public partial class Form1 : Form
                 Logic();
             }
         }
+        // View playlist
+        else if (e.ColumnIndex == 7 && page == "Playlist")
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            progressBar1.Value = 0;
+            var pl = pC.GetPlaylist((string)dataGridView1[4, e.RowIndex].Value, (string)dataGridView1[0, e.RowIndex].Value);
+            progressBar1.Value += 25;
+            if (pl != null)
+            {
+                // VIEW SONGS FROM PLAYLIST
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Title", typeof(string));
+                dt.Columns.Add("Artists", typeof(string));
+                dt.Columns.Add("Album", typeof(string));
+                dt.Columns.Add("Genre", typeof(string));
+                dt.Columns.Add("Duration", typeof(string));
+                dt.Columns.Add("Danceability", typeof(string));
+                dt.Columns.Add("Profanity", typeof(bool));
+                dt.Columns.Add("Track ID", typeof(string));
+                dt.Columns.Add("Add", typeof(string));
+                dt.Columns.Add("Remove", typeof(string));
+
+                var playlistSongs = pl.PlaylistSongs.ToList();
+
+                progressBar1.Value += 25;
+
+                var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
+                var songs = sC.SearchString("").Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
+
+                progressBar1.Value += 25;
+
+                foreach (var song in songs)
+                {
+                    dt.Rows.Add([$"{song.Trackname}", $"{song.Artists}", $"{song.Albumname}", $"{song.Genre}", $"{TimeSpan.FromMilliseconds((double)song.Duration).ToString(@"mm\:ss")}", $"{song.Danceability * 100:0.}%", $"{song.Profanity}", song.TrackId, "➕", "➖",]);
+                }
+                progressBar1.Value += 25;
+                dataGridView1.DataSource = dt;
+                /////// TIMER
+                stopwatch.Stop();
+                TimeSpan ts = stopwatch.Elapsed;
+                string elapsedTime = String.Format("{0:0}.{1:000}", ts.Seconds, ts.Milliseconds);
+                label5.Text = $"{dataGridView1.Rows.Count} results in {elapsedTime}s";
+            }
+        }
+        else
+            textBox3.Visible = false;
 
     }
 
@@ -457,8 +525,6 @@ public partial class Form1 : Form
     {
         if (e.KeyCode == Keys.Enter)
         {
-            PlaylistController pC = new();
-            SongController sC = new();
             if (username == null)
             {
                 textBox3.Text = $"Must be signed in";
@@ -476,19 +542,63 @@ public partial class Form1 : Form
                 pl = pC.GetPlaylist(username, playlist);
                 string trackID = (string)dataGridView1[7, row].Value;
 
-                pC.AddSongToPlaylist(pl.PlaylistId, trackID);
-                textBox3.Text = $"Song added to {playlist}";
-                textBox3.ForeColor = Color.Green;
+                if (!pl.PlaylistSongs.Any(song => song.TrackId == trackID))
+                {
+                    pC.AddSongToPlaylist(pl.PlaylistId, trackID);
+                    textBox3.Text = $"Song added to {playlist}";
+                    textBox3.ForeColor = Color.Green;
+                    return;
+                }
+                textBox3.Text = $"Song already on {playlist}";
+                textBox3.ForeColor = Color.Red;
             }
             else
             {
+
                 string playlist = textBox3.Text;
                 var pl = pC.GetPlaylist(username, playlist);
-                string trackID = (string)dataGridView1[7, row].Value;
+                if (pl != null)
+                {
+                    var trackID = (string)dataGridView1[7, row].Value;
 
-                pC.RemoveSongFromPlaylist(pl.PlaylistId, trackID);
-                textBox3.Text = $"Song removed from {playlist}";
-                textBox3.ForeColor = Color.Red;
+                    pC.RemoveSongFromPlaylist(pl.PlaylistId, trackID);
+                    textBox3.Text = $"Song removed from {playlist}";
+                    textBox3.ForeColor = Color.Red;
+
+                    if(page == "Playlist")
+                    {
+                        progressBar1.Value = 0;
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add("Title", typeof(string));
+                        dt.Columns.Add("Artists", typeof(string));
+                        dt.Columns.Add("Album", typeof(string));
+                        dt.Columns.Add("Genre", typeof(string));
+                        dt.Columns.Add("Duration", typeof(string));
+                        dt.Columns.Add("Danceability", typeof(string));
+                        dt.Columns.Add("Profanity", typeof(bool));
+                        dt.Columns.Add("Track ID", typeof(string));
+                        dt.Columns.Add("Add", typeof(string));
+                        dt.Columns.Add("Remove", typeof(string));
+
+                        var playlistSongs = pl.PlaylistSongs.ToList();
+
+                        progressBar1.Value += 33;
+
+                        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
+                        var songs = sC.SearchString("").Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
+
+                        progressBar1.Value += 33;
+
+                        foreach (var song in songs)
+                        {
+                            dt.Rows.Add([$"{song.Trackname}", $"{song.Artists}", $"{song.Albumname}", $"{song.Genre}", $"{TimeSpan.FromMilliseconds((double)song.Duration).ToString(@"mm\:ss")}", $"{song.Danceability * 100:0.}%", $"{song.Profanity}", song.TrackId, "➕", "➖",]);
+                        }
+                        progressBar1.Value += 34;
+                        dataGridView1.DataSource = dt;
+                    }
+                }
+                else
+                { textBox3.Text = "That playlist doesn't exist"; textBox3.ForeColor = Color.Red; }
             }
         }
     }

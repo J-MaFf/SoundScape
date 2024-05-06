@@ -3,26 +3,23 @@ using COMPSCI366.Models;
 /// <summary>
 /// Represents a controller for managing songs.
 /// </summary>
-public class SongController
+public class SongController : Controller
 {
-    private readonly CompsciprojectContext _context;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="SongController"/> class.
     /// </summary>
     public SongController()
     {
-        _context = new CompsciprojectContext();
     }
 
     public List<Song> SearchString(string keyword)
     {
         if (string.IsNullOrWhiteSpace(keyword))
         {
-            return _context.Songs.ToList();
+            return _songs.ToList();
         }
         var lowerKeyword = keyword.ToLower(); // Convert keyword to lowercase for case insensitive search
-        var filteredSongs = _context.Songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
+        var filteredSongs = _songs.Where(s => (s.Trackname != null && s.Trackname.ToLower().Contains(lowerKeyword)) ||
                                 (s.Artists != null && s.Artists.ToLower().Contains(lowerKeyword)) ||
                                 (s.Album != null && s.Album.Name.ToLower().Contains(lowerKeyword))).ToList();
         return filteredSongs.Distinct(new SongComparer()).ToList();

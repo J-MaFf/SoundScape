@@ -14,22 +14,7 @@ static partial class Program
     [STAThread]
     static void Main()
     {
-        AllocConsole();
-        // // To customize application configuration such as set high DPI settings or default font,
-        // // see https://aka.ms/applicationconfiguration.
-
-        //AlbumController aC  = new AlbumController();
-        //var albums = aC.SearchString("");
-        //foreach( var album in albums )
-        //{
-        //    foreach (var song in album.Songs )
-        //    {
-        //        Console.WriteLine(song.Trackname);
-        //    }
-        //}
-
-        PlaylistController pC = new PlaylistController();
-        //pC.EraseAllPlaylistsAndPlaylistSongs();
+        //AllocConsole();
 
         ApplicationConfiguration.Initialize();
         Application.Run(new Form1());

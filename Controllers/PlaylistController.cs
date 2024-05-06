@@ -1,49 +1,51 @@
 using COMPSCI366.Models;
+using Microsoft.VisualBasic.Devices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-public class PlaylistController
+public class PlaylistController : Controller
 {
-    private readonly CompsciprojectContext _context;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="PlaylistController"/> class.
     /// </summary>
     public PlaylistController()
     {
-        _context = new CompsciprojectContext();
     }
 
     public List<Playlist> SearchString(string keyword)
     {
+        var lowerKeyword = keyword.ToLower(); // Case insensitive search
+        var playlistSongs = _context.PlaylistSongs.ToList();
+        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist 
+        var songs = _songs.Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
         if (string.IsNullOrWhiteSpace(keyword))
         {
             return _context.Playlists.ToList();
         }
-        var lowerKeyword = keyword.ToLower(); // Case insensitive search
 
-        var playlistSongs = _context.PlaylistSongs.ToList();
-        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
-        var songs = _context.Songs.Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
-
-        return _context.Playlists.Where(playlist =>
-            playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
-            playlist.Description != null && playlist.Description.ToLower().Contains(lowerKeyword) ||
-            playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
-            songs.Any(song => song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword))
-        ).ToList();
+        return _context.Playlists
+        .Where(playlist =>
+        playlist.PlaylistName != null && playlist.PlaylistName.ToLower().Contains(lowerKeyword) ||
+        playlist.Description != null && playlist.Description.ToLower().Contains(lowerKeyword) ||
+        playlist.Username != null && playlist.Username.ToLower().Contains(lowerKeyword) ||
+        _context.Songs.Any(song =>
+            playlist.PlaylistSongs.Any(ps => ps.TrackId == song.TrackId) &&
+            (song.Trackname != null && song.Trackname.ToLower().Contains(lowerKeyword) ||
+            song.Artists != null && song.Artists.ToLower().Contains(lowerKeyword) ||
+            song.Albumname != null && song.Albumname.ToLower().Contains(lowerKeyword))
+        )
+    )
+    .ToList();
     }
     public List<Playlist> SortByCreationDate(List<Playlist> playlists)
     {
         return _context.Playlists.OrderByDescending(playlist => playlist.CreationDate).ToList();
     }
-    public List<Song> GetSongsByID(List<PlaylistSong> playlistSongs)
-    {
-        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist entries
-        return _context.Songs.Where(song => songIds.Contains(song.TrackId)).ToList();
-    }
 
     public Playlist? GetPlaylist(string username, string playlistName)
     {
+        var playlistSongs = _context.PlaylistSongs.ToList();
+        var songIds = playlistSongs.Select(ps => ps.TrackId).ToList(); // Extract song IDs from playlist 
+        var songs = _songs.Where(song => songIds.Contains(song.TrackId)); // Get songs by ID
         return _context.Playlists.FirstOrDefault(playlist => playlist.Username == username && playlist.PlaylistName == playlistName);
     }
 
@@ -90,28 +92,17 @@ public class PlaylistController
     /// <returns>True if the playlist was successfully deleted, false otherwise.</returns>
     public bool DeletePlaylist(string playlistId)
     {
-        var playlist = _context.Playlists.Find(playlistId);
-
+        var playlist = _context.Playlists.FirstOrDefault(p => p.PlaylistId == playlistId);
         if (playlist == null)
         {
             return false;
         }
 
-        // Remove all songs from the playlist
-        var playlistSongs = _context.PlaylistSongs
-            .Where(ps => ps.PlaylistId == playlistId)
-            .ToList();
+        // Remove related songs
+        var songs = _context.PlaylistSongs.Where(ps => ps.PlaylistId == playlistId).ToList();
+        _context.PlaylistSongs.RemoveRange(songs);
 
-        playlistSongs.ForEach(ps => _context.PlaylistSongs.Remove(ps));
-
-        _context.SaveChanges();
-
-        // Verify that all songs were removed
-        if (_context.PlaylistSongs.Any(ps => ps.PlaylistId == playlistId))
-        {
-            return false;
-        }
-
+        // Remove the playlist
         _context.Playlists.Remove(playlist);
         _context.SaveChanges();
 
