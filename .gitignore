@@ -44,3 +44,10 @@ _AI*
 
 # Ignore crash dump files
 *.dmp
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
+*.gate.lock*

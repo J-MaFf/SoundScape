@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "SoundScape",
+  "project_id": "3a95cb77-10a2-4365-a315-23f884752f75"
+}
